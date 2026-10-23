@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dealership
+      POSTGRES_PASSWORD: dealership
+      POSTGRES_DB: dealership
+    ports: ["5432:5432"]            # lets you run the backend / tests on your host machine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dealership -d dealership"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    ports: ["8000:8000"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://dealership:dealership@db:5432/dealership
+      SECRET_KEY: ${SECRET_KEY:-dev-only-change-me}
+      CORS_ORIGINS: '["http://localhost:5173","http://localhost:3000"]'
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+    ports: ["3000:80"]
+    depends_on: [backend]
+
+volumes:
+  pgdata:

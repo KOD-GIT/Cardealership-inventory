@@ -1,0 +1,9 @@
+# <type>: <short summary, imperative, max ~60 chars>
+#
+# Types: test (RED) | feat (GREEN) | refactor | fix | docs | chore | ci
+#
+# Body: what and why. If AI helped, say HOW (boilerplate, tests, debugging...)
+#
+#
+# Only when an AI tool was used for this commit (keep the two blank lines above):
+# Co-authored-by: Claude <noreply@anthropic.com>
