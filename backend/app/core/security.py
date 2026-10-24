@@ -6,10 +6,12 @@ token round-trip, expired token rejected, tampered token rejected), then impleme
 from datetime import timedelta
 from typing import Any
 
+import bcrypt
+
 
 def hash_password(plain_password: str) -> str:
     """Return a salted bcrypt hash of the password."""
-    raise NotImplementedError
+    return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt()).decode()
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
