@@ -5,3 +5,7 @@ from app.core.money import to_cents
 
 def test_to_cents_converts_a_price_to_integer_cents() -> None:
     assert to_cents(Decimal("27999.99")) == 2799999
+
+
+def test_to_cents_rounds_half_up() -> None:
+    assert to_cents(Decimal("19.995")) == 2000
