@@ -26,11 +26,12 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 def create_access_token(subject: str, role: str, expires_delta: timedelta | None = None) -> str:
-    """Create a signed JWT carrying `sub` (user id), `role` and `exp` claims."""
+    """Create a signed JWT carrying `sub` (user id), `role`, `iat` and `exp` claims."""
     settings = get_settings()
     if expires_delta is None:
         expires_delta = timedelta(minutes=settings.access_token_expire_minutes)
-    payload = {"sub": subject, "role": role, "exp": datetime.now(UTC) + expires_delta}
+    now = datetime.now(UTC)
+    payload = {"sub": subject, "role": role, "iat": now, "exp": now + expires_delta}
     return jwt.encode(payload, settings.secret_key, algorithm=settings.jwt_algorithm)
 
 
