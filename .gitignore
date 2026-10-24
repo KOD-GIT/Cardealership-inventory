@@ -21,3 +21,6 @@ coverage/
 *.tsbuildinfo
 # Local plans & notes (private)
 *PROJECT_PLAN.md
+# Claude Code personal files (not shared)
+.claude/settings.local.json
+CLAUDE.local.md
