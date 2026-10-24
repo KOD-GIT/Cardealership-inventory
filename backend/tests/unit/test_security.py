@@ -1,3 +1,8 @@
+from datetime import timedelta
+
+import jwt
+import pytest
+
 from app.core.security import (
     create_access_token,
     decode_access_token,
@@ -30,3 +35,9 @@ def test_access_token_round_trip_keeps_subject_and_role() -> None:
     claims = decode_access_token(token)
     assert claims["sub"] == "42"
     assert claims["role"] == "ADMIN"
+
+
+def test_decode_access_token_rejects_an_expired_token() -> None:
+    token = create_access_token("42", "ADMIN", expires_delta=timedelta(seconds=-1))
+    with pytest.raises(jwt.ExpiredSignatureError):
+        decode_access_token(token)
