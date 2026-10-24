@@ -19,4 +19,5 @@ coverage/
 .idea/
 .vscode/
 *.tsbuildinfo
-
+# Local plans & notes (private)
+*PROJECT_PLAN.md

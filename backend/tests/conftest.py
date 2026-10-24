@@ -16,11 +16,16 @@ from app.core.config import get_settings
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
+from app.scripts.doctor import unsafe_test_database
 
 
 @pytest.fixture(scope="session")
 def engine() -> Iterator[Engine]:
-    test_engine = create_engine(get_settings().test_database_url, pool_pre_ping=True)
+    url = get_settings().test_database_url
+    unsafe = unsafe_test_database(url)
+    if unsafe:  # safety net: never DROP the tables of a real database
+        pytest.exit(f"Refusing to run: {unsafe}", returncode=2)
+    test_engine = create_engine(url, pool_pre_ping=True)
     Base.metadata.drop_all(test_engine)
     Base.metadata.create_all(test_engine)
     yield test_engine

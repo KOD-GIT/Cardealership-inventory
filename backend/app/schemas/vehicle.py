@@ -1,17 +1,21 @@
 from decimal import Decimal
+from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, model_validator
 
 from app.core.money import from_cents
 from app.models.enums import VehicleCategory
 from app.models.vehicle import Vehicle
+
+# Pydantic writes Decimal as a JSON *string* ("27999.99"); the API contract (and the frontend) want a number.
+Money = Annotated[Decimal, PlainSerializer(float, return_type=float, when_used="json")]
 
 
 class VehicleBase(BaseModel):
     make: str = Field(min_length=1, max_length=80)
     model: str = Field(min_length=1, max_length=80)
     category: VehicleCategory
-    price: Decimal = Field(gt=0, max_digits=10, decimal_places=2)  # currency units, e.g. 25999.99
+    price: Money = Field(gt=0, max_digits=10, decimal_places=2)  # currency units, e.g. 25999.99
     quantity: int = Field(ge=0)
     year: int | None = Field(default=None, ge=1886, le=2100)
     image_url: str | None = Field(default=None, max_length=500)
@@ -27,7 +31,7 @@ class VehicleUpdate(BaseModel):
     make: str | None = Field(default=None, min_length=1, max_length=80)
     model: str | None = Field(default=None, min_length=1, max_length=80)
     category: VehicleCategory | None = None
-    price: Decimal | None = Field(default=None, gt=0, max_digits=10, decimal_places=2)
+    price: Money | None = Field(default=None, gt=0, max_digits=10, decimal_places=2)
     quantity: int | None = Field(default=None, ge=0)
     year: int | None = Field(default=None, ge=1886, le=2100)
     image_url: str | None = Field(default=None, max_length=500)

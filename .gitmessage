@@ -4,6 +4,7 @@
 #
 # Body: what and why. If AI helped, say HOW (boilerplate, tests, debugging...)
 #
-#
-# Only when an AI tool was used for this commit (keep the two blank lines above):
+# Only when an AI tool was used for this commit: make the trailer below the LAST
+# paragraph, after a blank line (git collapses extra blank lines; the trailer is
+# still recognised). Remove the leading "# " from it:
 # Co-authored-by: Claude <noreply@anthropic.com>

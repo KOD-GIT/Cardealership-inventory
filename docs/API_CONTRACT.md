@@ -5,7 +5,7 @@ Base URL (local): `http://localhost:8000` · Interactive docs: `/docs` (Swagger)
 **Conventions**
 - JSON in, JSON out. Errors use `{"detail": "message"}`; validation errors use FastAPI's default 422 body.
 - Protected endpoints need `Authorization: Bearer <access_token>`.
-- Money is a decimal number with at most 2 decimals (`25999.99`), stored internally as cents.
+- Money is a decimal number with at most 2 decimals (`25999.99`), stored internally as cents. It is sent as a JSON **number**, never a string.
 - JWT: HS256, claims `sub` (user id), `role`, `iat`, `exp` (default 60 min).
 
 ## Permission matrix
@@ -22,7 +22,7 @@ Base URL (local): `http://localhost:8000` · Interactive docs: `/docs` (Swagger)
 | POST /api/vehicles/:id/purchase | ❌ 401 | ✅ | ✅ |
 | POST /api/vehicles/:id/restock | ❌ 401 | ❌ 403 | ✅ |
 
-> The kata only marks delete and restock as "Admin only". Create and update endpoints are also configured as admin-only by design. To follow the spec literally, swap `require_admin` for `get_current_user` on those two routes.
+> The kata only marks delete and restock as "Admin only". Create/update being admin-only too is **my decision** (see PROJECT_PLAN.md, decision D4). To follow the spec literally, swap `require_admin` for `get_current_user` on those two routes.
 
 ## Auth
 
@@ -33,7 +33,7 @@ Base URL (local): `http://localhost:8000` · Interactive docs: `/docs` (Swagger)
 // response
 { "id": 1, "email": "jane@example.com", "role": "USER" }
 ```
-Errors: `409` email already registered · `422` invalid email / password shorter than 8 chars.
+Errors: `409` email already registered · `422` invalid email / password shorter than 8 characters or longer than 72 **bytes** (bcrypt's limit).
 The request can never set `role`; extra fields are ignored.
 
 ### POST /api/auth/login → 200
