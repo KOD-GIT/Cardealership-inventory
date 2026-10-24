@@ -3,7 +3,7 @@
 TDD TARGET: write tests/unit/test_security.py first (hash != plain, verify works,
 token round-trip, expired token rejected, tampered token rejected), then implement.
 """
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import bcrypt
@@ -28,7 +28,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def create_access_token(subject: str, role: str, expires_delta: timedelta | None = None) -> str:
     """Create a signed JWT carrying `sub` (user id), `role` and `exp` claims."""
     settings = get_settings()
-    payload = {"sub": subject, "role": role}
+    if expires_delta is None:
+        expires_delta = timedelta(minutes=settings.access_token_expire_minutes)
+    payload = {"sub": subject, "role": role, "exp": datetime.now(UTC) + expires_delta}
     return jwt.encode(payload, settings.secret_key, algorithm=settings.jwt_algorithm)
 
 
