@@ -12,4 +12,4 @@ def to_cents(amount: Decimal) -> int:
 
 def from_cents(cents: int) -> Decimal:
     """Convert integer cents to a 2-decimal Decimal."""
-    raise NotImplementedError
+    return (Decimal(cents) / 100).quantize(Decimal("0.01"))
