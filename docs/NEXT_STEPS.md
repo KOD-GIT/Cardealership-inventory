@@ -35,7 +35,7 @@ Two bugs in the skeleton were found and **already fixed** while preparing this g
 ### A1. Tools you need
 **Full step-by-step installs and configuration (PostgreSQL with or without Docker, Git and GitHub login, Python, Node, `.env` files) are in [`SETUP_GUIDE.md`](SETUP_GUIDE.md).** This section is the short version.
 
-Git, Python 3.12, Node 20+, and Docker Desktop (easiest way to run PostgreSQL). No Docker? Install PostgreSQL 14+ yourself and create the two databases listed in `docs/PROJECT_PLAN.md` section 9.
+Git, Python 3.12, Node 20+, and Docker Desktop (easiest way to run PostgreSQL). No Docker? Install PostgreSQL 14+ yourself and create two databases: `dealership` and `dealership_test` (see `docker/postgres/init.sql`).
 
 ### A2. Unzip and open the project
 Unzip `car-dealership-inventory.zip`, open the folder in your editor, and open **two terminals**: one in `backend/`, one in `frontend/`.
@@ -377,7 +377,7 @@ git log --all --oneline -- .env backend/.env frontend/.env   # should print noth
 The demo admin password (`Admin@12345`) is a documented default in `config.py` and the README, which is fine for a kata. In any real deployment, set your own `ADMIN_PASSWORD` and `SECRET_KEY` as environment variables.
 **Clean-clone test (do not skip):** clone your repo into a new folder and follow your own README from the first line. Anything that fails there would fail for the reviewer too.
 
-**Definition of done:** `docs/PROJECT_PLAN.md` section 11 has the full checklist. Both CI jobs are green, and backend coverage is 90% or more.
+**Definition of done:** run `/final-check` for the full checklist. Both CI jobs are green, and backend coverage is 90% or more.
 
 ---
 

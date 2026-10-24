@@ -4,7 +4,6 @@ This is the master guide. It follows your kata document line by line and covers 
 - [`SETUP_GUIDE.md`](SETUP_GUIDE.md): **installing and configuring every tool**, including PostgreSQL with and without Docker (Stage 1 and 4 use it)
 - [`ANTIGRAVITY_SETUP.md`](ANTIGRAVITY_SETUP.md): a runbook you hand to the **Antigravity agent** so it does the whole setup for you (Stage 4 can be done this way)
 - [`NEXT_STEPS.md`](NEXT_STEPS.md): the backend phases in detail, with verified code hints (Stage 5 summarises it)
-- [`PROJECT_PLAN.md`](PROJECT_PLAN.md): the decisions behind the design
 
 **Every step in this guide is tagged** `[TDD]`, `[FIX = TEST FIRST]`, `[NOT TDD]` or `[CHECK]`. Only the first two start with a failing test. The **TDD map** below shows all of them in one table.
 
@@ -154,7 +153,7 @@ The skeleton was generated with AI. **You are responsible for it**, and you will
 | `.github/workflows/ci.yml` | CI for both halves | What runs on every push |
 
 ### 2.2 Reading order (about an hour)
-1. `docs/PROJECT_PLAN.md`, then `docs/API_CONTRACT.md`.
+1. `docs/API_CONTRACT.md`, then `docs/ER_DIAGRAM.md`.
 2. `backend/app/models/*.py`, then `schemas/*.py`, then `api/routes/vehicles.py`, then the service and repository stubs.
 3. `frontend/src/api/client.ts`, `context/AuthContext.tsx`, `hooks/useVehicles.ts`.
 4. `pages/DashboardPage.tsx`, `components/vehicles/VehicleCard.tsx`, `components/vehicle3d/VehicleCard3D.tsx`.
@@ -185,8 +184,8 @@ These commands were run on a clean copy: **every file ends up committed, and eve
 git add .gitignore .gitmessage
 git commit -m "chore: add repository config" -m "Gitignore and the commit-message template (type prefixes and AI co-author trailer). Generated with AI assistance, reviewed by me." -m "Co-authored-by: Claude <noreply@anthropic.com>"
 
-git add docs/PROJECT_PLAN.md docs/API_CONTRACT.md docs/ER_DIAGRAM.md docs/ER_DIAGRAM.svg docs/ER_DIAGRAM.png docs/DESIGN_REVIEW.md docs/NEXT_STEPS.md docs/BUILD_GUIDE.md docs/SETUP_GUIDE.md docs/ANTIGRAVITY_SETUP.md docs/design
-git commit -m "docs: add project plan, API contract and ER diagram" -m "Requirements decisions (D1-D18), endpoint contract and permission matrix, PostgreSQL schema diagram. Drafted with AI, then reviewed against the kata." -m "Co-authored-by: Claude <noreply@anthropic.com>"
+git add docs/API_CONTRACT.md docs/ER_DIAGRAM.md docs/ER_DIAGRAM.svg docs/ER_DIAGRAM.png docs/DESIGN_REVIEW.md docs/NEXT_STEPS.md docs/BUILD_GUIDE.md docs/SETUP_GUIDE.md docs/ANTIGRAVITY_SETUP.md docs/design
+git commit -m "docs: add API contract and ER diagram" -m "Endpoint contract and permission matrix, PostgreSQL schema diagram. Drafted with AI, then reviewed against the kata." -m "Co-authored-by: Claude <noreply@anthropic.com>"
 
 git add backend/app/models backend/app/db backend/alembic backend/alembic.ini docker-compose.yml docker
 git commit -m "feat: add PostgreSQL schema, models and initial migration" -m "Users, vehicles and purchases tables with CHECK constraints, native enums and indexes. Alembic migration verified up and down. AI-assisted boilerplate." -m "Co-authored-by: Claude <noreply@anthropic.com>"

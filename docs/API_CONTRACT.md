@@ -22,7 +22,7 @@ Base URL (local): `http://localhost:8000` · Interactive docs: `/docs` (Swagger)
 | POST /api/vehicles/:id/purchase | ❌ 401 | ✅ | ✅ |
 | POST /api/vehicles/:id/restock | ❌ 401 | ❌ 403 | ✅ |
 
-> The kata only marks delete and restock as "Admin only". Create/update being admin-only too is **my decision** (see PROJECT_PLAN.md, decision D4). To follow the spec literally, swap `require_admin` for `get_current_user` on those two routes.
+> The kata only marks delete and restock as "Admin only". Create/update being admin-only too is **my decision**, to keep stock and catalogue changes with admins. To follow the spec literally, swap `require_admin` for `get_current_user` on those two routes.
 
 ## Auth
 

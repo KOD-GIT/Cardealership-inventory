@@ -26,12 +26,12 @@ Written 24 Oct 2026, when the project moved from a chat assistant and an IDE age
 - CI red: a stale `frontend/src/App.test.tsx` fails (`useRoutes() may be used only in the context of a <Router>`).
 - 4 of 5 commits lacked the AI co-author trailer.
 - `setup_env.py`, its test and `docs/ANTIGRAVITY_SETUP.md` were not merged; three guides were one version behind.
-- `.gitignore` deliberately ignores `*PROJECT_PLAN.md`, so six links in the docs are dead unless the plan is published.
+- `.gitignore` deliberately ignores `*PROJECT_PLAN.md`. Decided: it stays private, and the docs no longer link to it.
 
 **Do the fix pack before anything else**, so CI is green and the history is honest.
 
 ## 4. Open decisions (yours)
-1. Publish `docs/PROJECT_PLAN.md` (recommended) or keep it private and remove the six links.
+1. ~~Publish `docs/PROJECT_PLAN.md` or keep it private.~~ Decided: private; the links were removed.
 2. Rewrite history to add the missing trailers (`FIX_STEPS.md` step 5, content-safe, needs a force-push) or leave it and disclose it in the README.
 3. Which small frontend feature to build test-first (sort by price is fully specified in `BUILD_GUIDE.md` Stage 6).
 4. Optional extras: deployment, real `.glb` car models.

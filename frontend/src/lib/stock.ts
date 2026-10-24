@@ -1,4 +1,4 @@
-/** Units at or below this count are shown as "Only N left" (decision D15 in PROJECT_PLAN.md). */
+/** Units at or below this count are shown as "Only N left" (a design decision: low-stock warning). */
 export const LOW_STOCK_THRESHOLD = 2;
 
 export type StockLevel = "out" | "low" | "in";
