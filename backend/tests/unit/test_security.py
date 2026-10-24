@@ -60,3 +60,9 @@ def test_decode_access_token_rejects_a_tampered_token() -> None:
 
 def test_hash_password_uses_a_different_salt_each_time() -> None:
     assert hash_password("Secret123") != hash_password("Secret123")
+
+
+def test_access_token_contains_exp_and_iat() -> None:
+    claims = decode_access_token(create_access_token("42", "ADMIN"))
+    assert "exp" in claims
+    assert "iat" in claims
