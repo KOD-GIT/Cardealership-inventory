@@ -18,6 +18,7 @@ Admins can also add, update, delete and restock vehicles.
 ## Documentation
 - [ER diagram](docs/ER_DIAGRAM.md) (Chen notation, PostgreSQL DDL)
 - [API contract and permission matrix](docs/API_CONTRACT.md)
+- [Stitch UI prompts & design system](docs/stitch_prompts.md)
 
 ## Run locally
 
@@ -69,18 +70,20 @@ cd frontend && npm test
 _Add screenshots of login, dashboard, search, purchase and admin pages here._
 
 ## My AI Usage
-**Tools used:** _e.g. Claude, GitHub Copilot, ChatGPT_
+**Tools used:** Google Stitch, Claude
 
-**How I used them:** _e.g. brainstormed the stack and schema, generated the project skeleton, asked for edge cases
-for my tests, debugged X._
+**How I used them:**
+- **Google Stitch:** Generated comprehensive UI screen mockups and design system specifications for the Showroom digital car dealership web application. Created structured, self-contained prompts for 11 required screens (Desktop Sign in, Create account, Vehicle dashboard with parked & interactive card states, Admin inventory management, Restock/Delete modals, and Mobile equivalents) and 4 optional states (Loading skeletons, Empty search, Connection error, and Toast notifications) using contrast-checked WCAG AA design tokens.
+- **Claude:** Assisted with project architecture, full-stack directory skeleton, FastAPI & SQLAlchemy data models, TDD test specifications, and API contract design.
 
-**Reflection:** _what went well, what you had to correct, what you learned._
+**Reflection:**
+Using Google Stitch allowed establishing a consistent visual design language (colors, typography, component layout rules) upfront before implementing frontend React and Tailwind components. Strict prompt negative constraints (e.g. forbidding telemetry, fake stats, or VIN numbers) prevented AI hallucinations and ensured the visual screens strictly mirrored our data model and API contract.
 
-Raw chat logs are in [`PROMPTS.md`](PROMPTS.md).
+Raw chat logs and prompts are documented in [`PROMPTS.md`](PROMPTS.md) and [`docs/stitch_prompts.md`](docs/stitch_prompts.md).
 
 ## Project structure
 ```
 backend/   app/{api,services,repositories,models,schemas,core,db,scripts}  alembic/  tests/{unit,integration}
 frontend/  src/{api,components,pages,hooks,context,types,test}
-docs/      ER_DIAGRAM.md  API_CONTRACT.md
+docs/      ER_DIAGRAM.md  API_CONTRACT.md  stitch_prompts.md
 ```
