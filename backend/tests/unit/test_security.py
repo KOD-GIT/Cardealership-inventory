@@ -41,3 +41,22 @@ def test_decode_access_token_rejects_an_expired_token() -> None:
     token = create_access_token("42", "ADMIN", expires_delta=timedelta(seconds=-1))
     with pytest.raises(jwt.ExpiredSignatureError):
         decode_access_token(token)
+
+
+def test_decode_access_token_rejects_a_token_signed_with_another_secret() -> None:
+    claims = {"sub": "42", "role": "ADMIN"}
+    forged = jwt.encode(claims, "another-secret-that-is-long-enough-123", algorithm="HS256")
+    with pytest.raises(jwt.InvalidSignatureError):
+        decode_access_token(forged)
+
+
+def test_decode_access_token_rejects_a_tampered_token() -> None:
+    user_header, _, user_signature = create_access_token("42", "USER").split(".")
+    admin_payload = create_access_token("42", "ADMIN").split(".")[1]
+    tampered = f"{user_header}.{admin_payload}.{user_signature}"
+    with pytest.raises(jwt.InvalidSignatureError):
+        decode_access_token(tampered)
+
+
+def test_hash_password_uses_a_different_salt_each_time() -> None:
+    assert hash_password("Secret123") != hash_password("Secret123")
