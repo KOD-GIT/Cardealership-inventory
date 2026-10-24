@@ -13,3 +13,8 @@ def test_verify_password_accepts_the_right_password() -> None:
 def test_verify_password_rejects_a_wrong_password() -> None:
     hashed = hash_password("Secret123")
     assert verify_password("Wrong456", hashed) is False
+
+
+def test_verify_password_returns_false_for_a_password_over_72_bytes() -> None:
+    hashed = hash_password("Secret123")
+    assert verify_password("a" * 73, hashed) is False
