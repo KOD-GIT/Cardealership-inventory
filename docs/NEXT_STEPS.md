@@ -20,7 +20,7 @@ Everything below is in the order you should do it. Rough time budget: **about tw
 |---|---|
 | Frontend: all pages, 3D card, 72 tests (98% statement coverage) | Backend business logic (everything returns `501` or raises `NotImplementedError`) |
 | Database schema + Alembic migration (PostgreSQL) | Backend tests for phases 1 to 11 |
-| Backend skeleton: routes, services, repositories, schemas, environment doctor, 31 passing tests | Seed script |
+| Backend skeleton: routes, services, repositories, schemas, environment doctor, 40 passing tests | Seed script |
 | Docs: plan, API contract, ER diagram, design review | README screenshots from the real app, "My AI Usage", `PROMPTS.md` |
 | CI workflow (backend with a PostgreSQL service, frontend) | Confirm CI is green on GitHub |
 
@@ -70,7 +70,7 @@ python -c "import secrets; print(secrets.token_urlsafe(48))"   # paste the outpu
 Then:
 ```bash
 alembic upgrade head             # creates the tables
-pytest                           # expect: 31 passed
+pytest                           # expect: 40 passed
 python -m app.scripts.doctor     # checks tools, .env and both databases
 uvicorn app.main:app --reload    # open http://localhost:8000/docs
 ```

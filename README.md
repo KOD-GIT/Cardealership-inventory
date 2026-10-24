@@ -18,6 +18,7 @@ Admins can also add, update, delete and restock vehicles.
 ## Documentation
 - [**Build guide: from zero to submission, mapped to the kata**](docs/BUILD_GUIDE.md)
 - [**Setup guide: install and configure every tool, including PostgreSQL**](docs/SETUP_GUIDE.md)
+- [Antigravity setup runbook: let an AI agent do the setup](docs/ANTIGRAVITY_SETUP.md)
 - [Backend phases in detail, with verified hints](docs/NEXT_STEPS.md)
 - [ER diagram](docs/ER_DIAGRAM.md) (Chen notation, PostgreSQL DDL)
 - [Design review](docs/DESIGN_REVIEW.md) (what was kept, removed and fixed from the AI design export)

@@ -22,6 +22,8 @@ This guide installs and configures everything the project needs: **Git and GitHu
 | Docker Desktop | **Easiest** way to run PostgreSQL | any recent | `docker --version` |
 | Editor (VS Code) | Optional but recommended | any | n/a |
 
+**Want an AI agent to do the setup for you?** Hand the Antigravity agent the runbook in [`ANTIGRAVITY_SETUP.md`](ANTIGRAVITY_SETUP.md).
+
 **Fast path.** If you are comfortable with the tools above, install them, then:
 ```bash
 docker compose up -d db
@@ -243,6 +245,8 @@ Make a secret key and paste it after `SECRET_KEY=`:
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(48))"
 ```
+**Shortcut:** `python -m app.scripts.setup_env` (from `backend/`) creates both `.env` files and generates the `SECRET_KEY` for you. It is safe to run again: it never overwrites a value you set yourself and never prints the secret.
+
 After you edit `.env`, **restart the backend** (settings are read once at startup).
 
 ### frontend/.env

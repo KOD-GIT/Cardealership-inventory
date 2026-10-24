@@ -2,6 +2,7 @@
 
 This is the master guide. It follows your kata document line by line and covers the steps that were missing from the earlier guides. Two other documents go deeper on specific parts:
 - [`SETUP_GUIDE.md`](SETUP_GUIDE.md): **installing and configuring every tool**, including PostgreSQL with and without Docker (Stage 1 and 4 use it)
+- [`ANTIGRAVITY_SETUP.md`](ANTIGRAVITY_SETUP.md): a runbook you hand to the **Antigravity agent** so it does the whole setup for you (Stage 4 can be done this way)
 - [`NEXT_STEPS.md`](NEXT_STEPS.md): the backend phases in detail, with verified code hints (Stage 5 summarises it)
 - [`PROJECT_PLAN.md`](PROJECT_PLAN.md): the decisions behind the design
 
@@ -68,7 +69,7 @@ Every step carries one of four tags. **Only `[TDD]` and `[FIX = TEST FIRST]` ste
 | Stage 2: project tour | NOT TDD | Read, then explain back |
 | Stage 3.2: the 11 import commits | NOT TDD | Import the AI-generated skeleton, with honest messages |
 | Stage 3.3: push and CI | CHECK | Confirm CI is green |
-| Stage 4: run what exists | CHECK | Confirm the baseline (31 backend and 72 frontend tests pass) |
+| Stage 4: run what exists | CHECK | Confirm the baseline (40 backend and 72 frontend tests pass) |
 | **Stage 5, phases 1 to 11: the backend** | **TDD** | **Write a failing test** |
 | Stage 5, phase 12: coverage and report | CHECK, then TDD | Read the report; write a test first for any gap worth closing |
 | **Stage 6: one frontend feature** | **TDD** | **Write a failing component test** |
@@ -184,7 +185,7 @@ These commands were run on a clean copy: **every file ends up committed, and eve
 git add .gitignore .gitmessage
 git commit -m "chore: add repository config" -m "Gitignore and the commit-message template (type prefixes and AI co-author trailer). Generated with AI assistance, reviewed by me." -m "Co-authored-by: Claude <noreply@anthropic.com>"
 
-git add docs/PROJECT_PLAN.md docs/API_CONTRACT.md docs/ER_DIAGRAM.md docs/ER_DIAGRAM.svg docs/ER_DIAGRAM.png docs/DESIGN_REVIEW.md docs/NEXT_STEPS.md docs/BUILD_GUIDE.md docs/SETUP_GUIDE.md docs/design
+git add docs/PROJECT_PLAN.md docs/API_CONTRACT.md docs/ER_DIAGRAM.md docs/ER_DIAGRAM.svg docs/ER_DIAGRAM.png docs/DESIGN_REVIEW.md docs/NEXT_STEPS.md docs/BUILD_GUIDE.md docs/SETUP_GUIDE.md docs/ANTIGRAVITY_SETUP.md docs/design
 git commit -m "docs: add project plan, API contract and ER diagram" -m "Requirements decisions (D1-D18), endpoint contract and permission matrix, PostgreSQL schema diagram. Drafted with AI, then reviewed against the kata." -m "Co-authored-by: Claude <noreply@anthropic.com>"
 
 git add backend/app/models backend/app/db backend/alembic backend/alembic.ini docker-compose.yml docker
@@ -240,6 +241,7 @@ Notes, all verified:
 
 ## Stage 4. Run what exists [CHECK]
 
+**Prefer to let an AI agent do all of this?** Give the Antigravity agent the runbook in [`ANTIGRAVITY_SETUP.md`](ANTIGRAVITY_SETUP.md). The manual commands are below.
 ```bash
 docker compose up -d db                # PostgreSQL; wait for "healthy" in `docker compose ps`
 
@@ -248,8 +250,9 @@ python -m venv .venv
 source .venv/bin/activate              # Windows PowerShell: .venv\Scripts\Activate.ps1
 pip install -r requirements-dev.txt
 cp .env.example .env                   # Windows: copy .env.example .env  (set a real SECRET_KEY)
+#   or in one go, with a generated SECRET_KEY and no editing:  python -m app.scripts.setup_env
 alembic upgrade head
-pytest                                 # expect 31 passed
+pytest                                 # expect 40 passed
 python -m app.scripts.doctor           # checks tools, .env and both databases; fix every [FAIL] line
 uvicorn app.main:app --reload          # http://localhost:8000/docs
 
