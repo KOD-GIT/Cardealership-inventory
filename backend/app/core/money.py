@@ -7,7 +7,7 @@ from decimal import Decimal
 
 def to_cents(amount: Decimal) -> int:
     """Convert a decimal amount (e.g. 27999.99) to integer cents (2799999)."""
-    raise NotImplementedError
+    return int(amount * 100)
 
 
 def from_cents(cents: int) -> Decimal:
