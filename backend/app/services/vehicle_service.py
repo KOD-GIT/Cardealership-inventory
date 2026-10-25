@@ -18,7 +18,7 @@ class VehicleService:
         return [VehicleRead.from_model(vehicle) for vehicle in self._vehicles.list_all(skip, limit)]
 
     def search(self, params: VehicleSearchCriteria, skip: int = 0, limit: int = 50) -> list[VehicleRead]:
-        raise NotImplementedError
+        return [VehicleRead.from_model(vehicle) for vehicle in self._vehicles.search(params, skip, limit)]
 
     def update(self, vehicle_id: int, data: VehicleUpdate) -> VehicleRead:
         vehicle = self._get_or_raise(vehicle_id)

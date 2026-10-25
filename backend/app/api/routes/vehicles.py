@@ -4,7 +4,9 @@ admin-only (D4); list/search/purchase are open to any logged-in user.
 NOTE: /search must be declared BEFORE /{vehicle_id} so it is not captured as an id.
 Auth dependencies get wired in during TDD phase 2.
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.api.deps import get_current_user, get_vehicle_service, require_admin
 from app.models.user import User
@@ -13,6 +15,7 @@ from app.schemas.vehicle import (
     RestockRequest,
     VehicleCreate,
     VehicleRead,
+    VehicleSearchCriteria,
     VehicleUpdate,
 )
 from app.services.vehicle_service import VehicleService
@@ -42,13 +45,11 @@ def list_vehicles(
 
 @router.get("/search", response_model=list[VehicleRead])
 def search_vehicles(
-    make: str | None = None,
-    model: str | None = None,
-    category: str | None = None,
-    min_price: float | None = None,
-    max_price: float | None = None,
+    params: Annotated[VehicleSearchCriteria, Query()],
+    _user: User = Depends(get_current_user),
+    service: VehicleService = Depends(get_vehicle_service),
 ) -> list[VehicleRead]:
-    raise _NOT_IMPLEMENTED
+    return service.search(params)
 
 
 @router.put("/{vehicle_id}", response_model=VehicleRead)

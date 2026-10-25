@@ -31,7 +31,10 @@ class VehicleRepository:
 
     def search(self, params: VehicleSearchCriteria, skip: int = 0, limit: int = 50) -> list[Vehicle]:
         """Dynamic filters; make/model use case-insensitive partial match."""
-        raise NotImplementedError
+        query = select(Vehicle)
+        if params.make:
+            query = query.where(Vehicle.make.ilike(f"%{params.make}%"))
+        return list(self._db.scalars(query.order_by(Vehicle.id).offset(skip).limit(limit)))
 
     def delete(self, vehicle: Vehicle) -> None:
         self._db.delete(vehicle)
