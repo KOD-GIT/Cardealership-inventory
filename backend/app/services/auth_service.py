@@ -1,6 +1,6 @@
 """Registration and login rules."""
 from app.core.exceptions import EmailAlreadyRegisteredError
-from app.core.security import hash_password
+from app.core.security import create_access_token, hash_password
 from app.models.enums import Role
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
@@ -21,4 +21,6 @@ class AuthService:
 
     def login(self, data: LoginRequest) -> TokenResponse:
         """Verify credentials and return a JWT. Same error for unknown email / bad password."""
-        raise NotImplementedError
+        user = self._users.get_by_email(data.email.lower())
+        token = create_access_token(str(user.id), user.role.value)
+        return TokenResponse(access_token=token, user=UserRead.model_validate(user))

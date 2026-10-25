@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 
 from app.api.deps import get_auth_service
 from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserRead
@@ -13,5 +13,5 @@ def register(payload: RegisterRequest, service: AuthService = Depends(get_auth_s
 
 
 @router.post("/login", response_model=TokenResponse)
-def login(payload: LoginRequest) -> TokenResponse:
-    raise HTTPException(status.HTTP_501_NOT_IMPLEMENTED)
+def login(payload: LoginRequest, service: AuthService = Depends(get_auth_service)) -> TokenResponse:
+    return service.login(payload)
