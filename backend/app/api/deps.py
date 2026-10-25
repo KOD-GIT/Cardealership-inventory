@@ -1,6 +1,6 @@
 """FastAPI dependencies: DB session, service factories, current user, role guards."""
 from fastapi import Depends
-from fastapi.security import HTTPBearer
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -27,7 +27,10 @@ def get_inventory_service(db: Session = Depends(get_db)) -> InventoryService:
     return InventoryService(VehicleRepository(db), PurchaseRepository(db))
 
 
-def get_current_user(db: Session = Depends(get_db)) -> User:
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+    db: Session = Depends(get_db),
+) -> User:
     """Decode the Bearer token -> load user. 401 on missing/invalid/expired token."""
     raise NotImplementedError
 
