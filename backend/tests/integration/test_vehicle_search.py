@@ -39,3 +39,11 @@ def test_search_by_max_price_returns_only_vehicles_at_or_below_it(client, user_h
     response = client.get("/api/vehicles/search", params={"max_price": 20000}, headers=user_headers)
     assert response.status_code == 200
     assert [vehicle["model"] for vehicle in response.json()] == ["Cheap"]
+
+
+def test_search_treats_a_percent_sign_in_the_make_literally(client, user_headers, make_vehicle) -> None:
+    make_vehicle(make="Toyota", model="Camry")
+    make_vehicle(make="100% Electric", model="Prototype")
+    response = client.get("/api/vehicles/search", params={"make": "%"}, headers=user_headers)
+    assert response.status_code == 200
+    assert [vehicle["model"] for vehicle in response.json()] == ["Prototype"]
