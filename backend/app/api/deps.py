@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import decode_access_token
 from app.db.session import get_db
+from app.models.enums import Role
 from app.models.user import User
 from app.repositories.purchase_repository import PurchaseRepository
 from app.repositories.user_repository import UserRepository
@@ -60,4 +61,6 @@ def get_current_user(
 
 def require_admin(user: User = Depends(get_current_user)) -> User:
     """403 unless user.role == ADMIN."""
-    raise NotImplementedError
+    if user.role != Role.ADMIN:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, detail="Admin access required")
+    return user
