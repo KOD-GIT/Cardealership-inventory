@@ -1,4 +1,5 @@
 """Vehicle CRUD + search rules."""
+from app.core.exceptions import VehicleNotFoundError
 from app.core.money import to_cents
 from app.models.vehicle import Vehicle
 from app.repositories.vehicle_repository import VehicleRepository
@@ -21,6 +22,8 @@ class VehicleService:
 
     def update(self, vehicle_id: int, data: VehicleUpdate) -> VehicleRead:
         vehicle = self._vehicles.get(vehicle_id)
+        if vehicle is None:
+            raise VehicleNotFoundError
         changes = data.model_dump(exclude_unset=True)  # only the fields the client actually sent
         if "price" in changes:
             changes["price_cents"] = to_cents(changes.pop("price"))
