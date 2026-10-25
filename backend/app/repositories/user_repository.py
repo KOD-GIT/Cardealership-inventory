@@ -1,7 +1,9 @@
 """Data access for users. No business rules here - only queries."""
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.core.exceptions import EmailAlreadyRegisteredError
 from app.models.user import User
 
 
@@ -17,6 +19,10 @@ class UserRepository:
 
     def add(self, user: User) -> User:
         self._db.add(user)
-        self._db.commit()
+        try:
+            self._db.commit()
+        except IntegrityError:  # two requests passed the email check at once; the unique index decides
+            self._db.rollback()
+            raise EmailAlreadyRegisteredError from None
         self._db.refresh(user)
         return user
