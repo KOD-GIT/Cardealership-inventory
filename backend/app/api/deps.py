@@ -48,7 +48,10 @@ def get_current_user(
         claims = decode_access_token(credentials.credentials)
     except jwt.PyJWTError:
         raise _unauthorized() from None
-    return UserRepository(db).get_by_id(int(claims["sub"]))
+    user = UserRepository(db).get_by_id(int(claims["sub"]))
+    if user is None:
+        raise _unauthorized()
+    return user
 
 
 def require_admin(user: User = Depends(get_current_user)) -> User:
