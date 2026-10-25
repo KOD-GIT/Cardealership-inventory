@@ -22,7 +22,7 @@ class EmailAlreadyRegisteredError(DomainError):
 
 
 class InvalidCredentialsError(DomainError):
-    ...
+    default_message = "Invalid credentials"
 
 
 class VehicleNotFoundError(DomainError):
