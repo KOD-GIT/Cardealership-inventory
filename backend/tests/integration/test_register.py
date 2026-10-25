@@ -67,3 +67,10 @@ def test_register_ignores_a_role_sent_in_the_request(client) -> None:
 )
 def test_register_rejects_invalid_input_with_422(client, payload) -> None:
     assert client.post("/api/auth/register", json=payload).status_code == 422
+
+
+def test_register_duplicate_email_explains_why_in_plain_words(client) -> None:
+    payload = {"email": "jane@example.com", "password": "Secret123"}
+    client.post("/api/auth/register", json=payload)
+    response = client.post("/api/auth/register", json=payload)
+    assert response.json() == {"detail": "Email already registered"}
