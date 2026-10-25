@@ -33,4 +33,6 @@ class VehicleService:
 
     def delete(self, vehicle_id: int) -> None:
         vehicle = self._vehicles.get(vehicle_id)
+        if vehicle is None:
+            raise VehicleNotFoundError
         self._vehicles.delete(vehicle)
