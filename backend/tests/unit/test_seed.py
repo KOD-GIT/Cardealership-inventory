@@ -37,3 +37,13 @@ def test_running_the_seed_twice_does_not_duplicate_the_vehicles(db_session) -> N
     seed(db_session)
     count = db_session.scalar(select(func.count()).select_from(Vehicle))
     assert count == len(SAMPLE_VEHICLES)
+
+
+def test_the_seeded_admin_can_log_in_through_the_api(client, db_session) -> None:
+    seed(db_session)
+    settings = get_settings()
+    response = client.post(
+        "/api/auth/login", json={"email": settings.admin_email, "password": settings.admin_password}
+    )
+    assert response.status_code == 200
+    assert response.json()["user"]["role"] == "ADMIN"
