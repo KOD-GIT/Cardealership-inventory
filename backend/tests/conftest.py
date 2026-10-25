@@ -4,7 +4,8 @@ Strategy: tables are created once per session; every test runs inside a transact
 rolled back afterwards, so tests are isolated and fast without needing to truncate tables.
 Start the database first:  docker compose up -d db
 """
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
+from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
@@ -17,8 +18,9 @@ from app.core.security import create_access_token, hash_password
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
-from app.models.enums import Role
+from app.models.enums import Role, VehicleCategory
 from app.models.user import User
+from app.models.vehicle import Vehicle
 from app.scripts.doctor import unsafe_test_database
 
 
@@ -77,4 +79,22 @@ def admin_headers(db_session: Session) -> dict[str, str]:
     return _auth_headers_for(db_session, "admin@example.com", Role.ADMIN)
 
 
-# TODO (TDD phases 6-10): add a `make_vehicle(...)` factory once vehicles can be created.
+@pytest.fixture()
+def make_vehicle(db_session: Session) -> Callable[..., Vehicle]:
+    """Factory: save a vehicle straight in the database. Pass keyword arguments to override the defaults."""
+
+    def _make(**overrides: Any) -> Vehicle:
+        fields: dict[str, Any] = {
+            "make": "Toyota",
+            "model": "Camry",
+            "category": VehicleCategory.SEDAN,
+            "price_cents": 2799999,
+            "quantity": 5,
+            "year": 2024,
+        }
+        vehicle = Vehicle(**{**fields, **overrides})
+        db_session.add(vehicle)
+        db_session.commit()
+        return vehicle
+
+    return _make
