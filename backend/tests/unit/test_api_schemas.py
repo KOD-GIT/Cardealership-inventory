@@ -1,5 +1,6 @@
 """Guards two contract details that are easy to get wrong:
 prices must reach the frontend as JSON *numbers*, and passwords must fit bcrypt's 72-byte limit."""
+from datetime import UTC, datetime
 from decimal import Decimal
 
 import pytest
@@ -11,7 +12,7 @@ from app.schemas.vehicle import VehicleRead
 
 def _read(**overrides) -> VehicleRead:
     data = dict(id=1, make="Toyota", model="Camry", category="SEDAN", price=Decimal("27999.99"),
-                quantity=4, year=2024, image_url=None)
+                quantity=4, year=2024, image_url=None, created_at=datetime(2026, 10, 25, tzinfo=UTC))
     return VehicleRead(**{**data, **overrides})
 
 

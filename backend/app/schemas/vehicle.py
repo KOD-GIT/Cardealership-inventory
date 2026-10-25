@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import Annotated
 
@@ -41,6 +42,7 @@ class VehicleRead(VehicleBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    created_at: datetime
 
     @classmethod
     def from_model(cls, vehicle: Vehicle) -> "VehicleRead":
@@ -54,6 +56,7 @@ class VehicleRead(VehicleBase):
             quantity=vehicle.quantity,
             year=vehicle.year,
             image_url=vehicle.image_url,
+            created_at=vehicle.created_at,
         )
 
 
