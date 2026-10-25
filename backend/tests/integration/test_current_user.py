@@ -77,3 +77,8 @@ def test_require_admin_raises_403_for_a_regular_user() -> None:
     with pytest.raises(HTTPException) as error:
         require_admin(user)
     assert error.value.status_code == 403
+
+
+def test_require_admin_returns_the_user_for_an_admin() -> None:
+    admin = User(email="admin@example.com", hashed_password="x", role=Role.ADMIN)
+    assert require_admin(admin) is admin
