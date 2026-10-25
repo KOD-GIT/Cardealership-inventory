@@ -10,3 +10,8 @@ def test_login_with_a_wrong_password_returns_401(client) -> None:
     client.post("/api/auth/register", json={"email": "jane@example.com", "password": "Secret123"})
     response = client.post("/api/auth/login", json={"email": "jane@example.com", "password": "Wrong456"})
     assert response.status_code == 401
+
+
+def test_login_with_an_unknown_email_returns_401(client) -> None:
+    response = client.post("/api/auth/login", json={"email": "nobody@example.com", "password": "Secret123"})
+    assert response.status_code == 401
