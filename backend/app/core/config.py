@@ -1,6 +1,7 @@
 """Application settings, loaded from environment variables / .env (12-factor style)."""
 from functools import lru_cache
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -18,6 +19,15 @@ class Settings(BaseSettings):
     # Used only by app/scripts/seed.py
     admin_email: str = "admin@dealership.com"
     admin_password: str = "Admin@12345"
+
+    @field_validator("database_url", "test_database_url")
+    @classmethod
+    def _use_the_psycopg_driver(cls, url: str) -> str:
+        """Hosts such as Neon hand out `postgresql://...`; SQLAlchemy needs the driver named explicitly."""
+        for plain in ("postgresql://", "postgres://"):
+            if url.startswith(plain):
+                return "postgresql+psycopg://" + url[len(plain):]
+        return url
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
