@@ -1,10 +1,16 @@
 """Data access for vehicles. No business rules here - only queries."""
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy import ColumnElement, select
+from sqlalchemy.orm import InstrumentedAttribute, Session
 
 from app.core.money import to_cents
 from app.models.vehicle import Vehicle
 from app.schemas.vehicle import VehicleSearchCriteria
+
+
+def _contains(column: InstrumentedAttribute[str], text: str) -> ColumnElement[bool]:
+    """Case-insensitive 'contains'. % and _ in the user's text are matched literally, not as wildcards."""
+    escaped = text.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    return column.ilike(f"%{escaped}%", escape="\\")
 
 
 class VehicleRepository:
@@ -34,9 +40,9 @@ class VehicleRepository:
         """Dynamic filters; make/model use case-insensitive partial match."""
         query = select(Vehicle)
         if params.make:
-            query = query.where(Vehicle.make.ilike(f"%{params.make}%"))
+            query = query.where(_contains(Vehicle.make, params.make))
         if params.model:
-            query = query.where(Vehicle.model.ilike(f"%{params.model}%"))
+            query = query.where(_contains(Vehicle.model, params.model))
         if params.category:
             query = query.where(Vehicle.category == params.category)
         if params.min_price is not None:
