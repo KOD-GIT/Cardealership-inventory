@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.core.config import get_settings
 from app.core.security import verify_password
@@ -6,7 +6,7 @@ from app.models.enums import Role
 from app.models.user import User
 from app.models.vehicle import Vehicle
 from app.repositories.user_repository import UserRepository
-from app.scripts.seed import seed
+from app.scripts.seed import SAMPLE_VEHICLES, seed
 
 
 def test_seed_creates_the_admin_from_the_settings(db_session) -> None:
@@ -30,3 +30,10 @@ def test_seed_creates_sample_vehicles_with_an_out_of_stock_and_a_last_one(db_ses
     quantities = db_session.scalars(select(Vehicle.quantity)).all()
     assert 0 in quantities  # shows the disabled Purchase button
     assert 1 in quantities  # shows "Only 1 left"
+
+
+def test_running_the_seed_twice_does_not_duplicate_the_vehicles(db_session) -> None:
+    seed(db_session)
+    seed(db_session)
+    count = db_session.scalar(select(func.count()).select_from(Vehicle))
+    assert count == len(SAMPLE_VEHICLES)
