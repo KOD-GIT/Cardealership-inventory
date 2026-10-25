@@ -12,3 +12,8 @@ def test_admin_restock_adds_to_the_stock_and_returns_the_vehicle(client, admin_h
     assert response.status_code == 200
     assert response.json()["id"] == vehicle.id
     assert response.json()["quantity"] == 7
+
+
+def test_restock_of_an_unknown_vehicle_returns_404(client, admin_headers) -> None:
+    response = client.post("/api/vehicles/999999/restock", json={"quantity": 5}, headers=admin_headers)
+    assert response.status_code == 404
