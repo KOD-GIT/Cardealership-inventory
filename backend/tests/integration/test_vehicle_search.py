@@ -23,3 +23,11 @@ def test_search_by_category_returns_only_that_category(client, user_headers, mak
     response = client.get("/api/vehicles/search", params={"category": "SUV"}, headers=user_headers)
     assert response.status_code == 200
     assert [vehicle["model"] for vehicle in response.json()] == ["RAV4"]
+
+
+def test_search_by_min_price_returns_only_vehicles_at_or_above_it(client, user_headers, make_vehicle) -> None:
+    make_vehicle(model="Cheap", price_cents=1500000)
+    make_vehicle(model="Pricey", price_cents=3000000)
+    response = client.get("/api/vehicles/search", params={"min_price": 20000}, headers=user_headers)
+    assert response.status_code == 200
+    assert [vehicle["model"] for vehicle in response.json()] == ["Pricey"]
