@@ -77,3 +77,13 @@ def test_purchase_keeps_the_price_it_was_bought_at(
     client.put(f"/api/vehicles/{vehicle.id}", json={"price": 19999.0}, headers=admin_headers)
     db_session.expire_all()
     assert db_session.scalar(select(Purchase)).unit_price_cents == 2799999
+
+
+def test_purchase_with_too_little_stock_says_out_of_stock_in_plain_words(
+    client, user_headers, make_vehicle
+) -> None:
+    vehicle = make_vehicle(quantity=1)
+    response = client.post(
+        f"/api/vehicles/{vehicle.id}/purchase", json={"quantity": 2}, headers=user_headers
+    )
+    assert response.json() == {"detail": "Out of stock"}
