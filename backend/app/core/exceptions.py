@@ -26,7 +26,7 @@ class InvalidCredentialsError(DomainError):
 
 
 class VehicleNotFoundError(DomainError):
-    ...
+    default_message = "Vehicle not found"
 
 
 class OutOfStockError(DomainError):
