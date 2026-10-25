@@ -43,3 +43,8 @@ def test_login_gives_the_same_error_for_a_wrong_password_and_an_unknown_email(cl
     unknown = client.post("/api/auth/login", json={"email": "nobody@example.com", "password": "Wrong456"})
     assert wrong_pw.status_code == unknown.status_code == 401
     assert wrong_pw.json() == unknown.json()
+
+
+def test_login_failure_says_invalid_credentials_in_plain_words(client) -> None:
+    response = client.post("/api/auth/login", json={"email": "nobody@example.com", "password": "Secret123"})
+    assert response.json() == {"detail": "Invalid credentials"}
