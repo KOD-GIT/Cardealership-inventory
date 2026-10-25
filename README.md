@@ -114,12 +114,26 @@ Taken from the real app against a freshly seeded database.
 | ![Sign in](docs/screenshots/login.png) | ![Phone floor](docs/screenshots/mobile-floor.png) | ![Phone vehicle](docs/screenshots/mobile-vehicle.png) |
 
 ## My AI Usage
-**Tools used:** _Claude (planning, backend skeleton, frontend), Google Stitch (UI exploration). Add any others._
+**Tools used:**
+- **Claude on the web:** early planning, the stack and database design, the setup guides and the first handoff (`files(1).zip`) that I continued from.
+- **Claude Code (VS Code extension):** nearly all the code in this repository: the test-first backend, the Docker setup, the IGNITION frontend and the DVM-CAR data import. Commits made with it carry a `Co-Authored-By: Claude` line.
+- **Google Stitch:** generated the IGNITION design and the vehicle photos I supplied as a design export.
 
-**How I used them:** _e.g. brainstormed the stack and schema, generated the project skeleton, asked for edge cases
-for my tests, debugged X._
+**How I used them:**
+- I gave Claude Code the handoff and let it work phase by phase. The backend (FastAPI, PostgreSQL) was written strictly test-first: a failing test, then the code, then a commit. There are 147 backend tests.
+- Claude built the React frontend from my design export and wired it to the real API. Where the API has no feature (cart, watchlist, compare, purchase history), it kept them in the browser and marked them as demo.
+- I asked for the status reports, the "is the database connected" check and the run instructions, and I told it when to push. It never pushed on its own.
+- I supplied the DVM-CAR dataset and asked for it to be merged into the project. Claude chose 60 models, converted the prices, copied only those photos and added the credit.
 
-**Reflection:** _what went well, what you had to correct, what you learned._
+**Reflection:**
+- What went well: test-first caught real bugs early, such as an out-of-stock race in purchases and prices that overflowed a 32-bit column. Checking the finished screens in a real browser found layout bugs the unit tests could not see.
+- What I had to correct or decide:
+  - The first push was rejected after I rewrote the GitHub history, so the commits had to be rebased onto it.
+  - I removed an unrequested redesign Claude had left in my working copy, and later asked for the new one properly.
+  - I removed a stray contributor from the history. GitHub's sidebar still showed the name for a while afterwards.
+  - Claude once wrote a wrong commit message, then flagged and fixed it.
+  - Importing the new data exposed a bug: the Floor silently stopped at 50 vehicles, because the frontend never asked the API for more than its first page. Claude fixed it with a test first.
+- Limits to know about: the AI wrote most of the code, so I treated each result as something to check, not trust; the tests, CI and the browser checks are how I did that. The dataset photos are small, and the DVM-CAR stock numbers are generated.
 
 Raw chat logs are in [`PROMPTS.md`](PROMPTS.md).
 
