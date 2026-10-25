@@ -19,7 +19,14 @@ export function mockInventoryApi(initial: Vehicle[] = sampleVehicles) {
   const notFound = () => HttpResponse.json({ detail: "Vehicle not found" }, { status: 404 });
 
   server.use(
-    http.get(`${API}/api/vehicles`, () => { state.calls.list += 1; return HttpResponse.json(state.vehicles); }),
+    http.get(`${API}/api/vehicles`, ({ request }) => {
+      // like the backend: skip/limit paging, 50 per page when no limit is given
+      const url = new URL(request.url);
+      const skip = Number(url.searchParams.get("skip") ?? 0);
+      const limit = Number(url.searchParams.get("limit") ?? 50);
+      state.calls.list += 1;
+      return HttpResponse.json(state.vehicles.slice(skip, skip + limit));
+    }),
     http.post(`${API}/api/vehicles/:id/purchase`, async ({ params, request }) => {
       const vehicle = find(params.id as string);
       if (!vehicle) return notFound();

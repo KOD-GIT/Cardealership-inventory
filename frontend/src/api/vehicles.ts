@@ -4,13 +4,17 @@ import { api } from "./client";
 export const hasFilters = (p: VehicleSearchParams): boolean =>
   Object.values(p).some((v) => v !== undefined && v !== "");
 
+const PAGE_SIZE = 100;
+
+/** The API answers one page at a time, so keep asking until a page comes back short. */
 export async function fetchVehicles(params: VehicleSearchParams = {}): Promise<Vehicle[]> {
-  if (hasFilters(params)) {
-    const { data } = await api.get<Vehicle[]>("/api/vehicles/search", { params });
-    return data;
+  const path = hasFilters(params) ? "/api/vehicles/search" : "/api/vehicles";
+  const all: Vehicle[] = [];
+  for (let skip = 0; ; skip += PAGE_SIZE) {
+    const { data } = await api.get<Vehicle[]>(path, { params: { ...params, skip, limit: PAGE_SIZE } });
+    all.push(...data);
+    if (data.length < PAGE_SIZE) return all;
   }
-  const { data } = await api.get<Vehicle[]>("/api/vehicles");
-  return data;
 }
 
 export const createVehicle = async (input: VehicleInput): Promise<Vehicle> =>
