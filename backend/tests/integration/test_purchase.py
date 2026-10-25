@@ -30,3 +30,8 @@ def test_purchase_with_too_little_stock_returns_409_and_changes_nothing(
     db_session.expire_all()
     assert db_session.get(Vehicle, vehicle_id).quantity == 2
     assert db_session.scalar(select(func.count()).select_from(Purchase)) == 0
+
+
+def test_purchase_of_an_unknown_vehicle_returns_404(client, user_headers) -> None:
+    response = client.post("/api/vehicles/999999/purchase", headers=user_headers)
+    assert response.status_code == 404
