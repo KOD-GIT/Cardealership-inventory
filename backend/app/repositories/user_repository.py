@@ -15,7 +15,7 @@ class UserRepository:
         return self._db.scalar(select(User).where(User.email == email))
 
     def get_by_id(self, user_id: int) -> User | None:
-        raise NotImplementedError
+        return self._db.get(User, user_id)
 
     def add(self, user: User) -> User:
         self._db.add(user)

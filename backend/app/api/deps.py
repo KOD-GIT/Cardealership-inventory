@@ -3,6 +3,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
+from app.core.security import decode_access_token
 from app.db.session import get_db
 from app.models.user import User
 from app.repositories.purchase_repository import PurchaseRepository
@@ -38,7 +39,8 @@ def get_current_user(
             detail="Not authenticated",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    raise NotImplementedError
+    claims = decode_access_token(credentials.credentials)
+    return UserRepository(db).get_by_id(int(claims["sub"]))
 
 
 def require_admin(user: User = Depends(get_current_user)) -> User:
