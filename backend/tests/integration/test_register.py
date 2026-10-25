@@ -1,3 +1,6 @@
+import pytest
+
+from app.core.security import verify_password
 from app.repositories.user_repository import UserRepository
 
 
@@ -26,3 +29,41 @@ def test_register_returns_409_when_the_email_check_loses_a_race(client, monkeypa
     monkeypatch.setattr(UserRepository, "get_by_email", lambda self, email: None)
     response = client.post("/api/auth/register", json=payload)
     assert response.status_code == 409
+
+
+def test_register_returns_the_public_user_without_the_password_hash(client) -> None:
+    response = client.post("/api/auth/register", json={"email": "jane@example.com", "password": "Secret123"})
+    body = response.json()
+    assert body["email"] == "jane@example.com"
+    assert body["role"] == "USER"
+    assert isinstance(body["id"], int)
+    assert "hashed_password" not in body
+    assert "password" not in body
+
+
+def test_register_stores_a_hash_not_the_plain_password(client, db_session) -> None:
+    client.post("/api/auth/register", json={"email": "jane@example.com", "password": "Secret123"})
+    user = UserRepository(db_session).get_by_email("jane@example.com")
+    assert user is not None
+    assert user.hashed_password != "Secret123"
+    assert verify_password("Secret123", user.hashed_password)
+
+
+def test_register_ignores_a_role_sent_in_the_request(client) -> None:
+    payload = {"email": "mallory@example.com", "password": "Secret123", "role": "ADMIN"}
+    response = client.post("/api/auth/register", json=payload)
+    assert response.status_code == 201
+    assert response.json()["role"] == "USER"
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"email": "not-an-email", "password": "Secret123"},
+        {"email": "jane@example.com", "password": "1234567"},
+        {"email": "jane@example.com", "password": "a" * 73},
+    ],
+    ids=["invalid-email", "short-password", "73-byte-password"],
+)
+def test_register_rejects_invalid_input_with_422(client, payload) -> None:
+    assert client.post("/api/auth/register", json=payload).status_code == 422
