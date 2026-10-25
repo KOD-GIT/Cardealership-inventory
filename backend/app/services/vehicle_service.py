@@ -32,4 +32,5 @@ class VehicleService:
         return VehicleRead.from_model(self._vehicles.save(vehicle))
 
     def delete(self, vehicle_id: int) -> None:
-        raise NotImplementedError
+        vehicle = self._vehicles.get(vehicle_id)
+        self._vehicles.delete(vehicle)

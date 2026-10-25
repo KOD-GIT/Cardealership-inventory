@@ -34,7 +34,8 @@ class VehicleRepository:
         raise NotImplementedError
 
     def delete(self, vehicle: Vehicle) -> None:
-        raise NotImplementedError
+        self._db.delete(vehicle)
+        self._db.commit()
 
     def decrement_stock(self, vehicle_id: int, quantity: int) -> bool:
         """Atomic conditional UPDATE (quantity >= :q). Return False when stock is insufficient."""
