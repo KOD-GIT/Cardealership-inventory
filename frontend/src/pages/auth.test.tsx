@@ -185,11 +185,17 @@ describe("Route guards and navigation", () => {
     expect(await homeHeading()).toBeInTheDocument();
   });
 
-  it("logs out and goes home as a signed-out visitor", async () => {
+  it("logs out: from a protected page you land on Sign in, and the session is gone", async () => {
     const { user } = renderApp("/floor", { signedInAs: customer });
     await user.click(await screen.findByRole("button", { name: "Log out" }));
-    expect(await screen.findByText("The floor is for signed-in visitors")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Sign in" })).toBeInTheDocument();
     await waitFor(() => expect(session.getToken()).toBeNull());
+  });
+
+  it("logging out of the public home page leaves you there, now as a visitor", async () => {
+    const { user } = renderApp("/", { signedInAs: customer });
+    await user.click(await screen.findByRole("button", { name: "Log out" }));
+    expect(await screen.findByText("The floor is for signed-in visitors")).toBeInTheDocument();
   });
 
   it("signs the user out when the API rejects the token (401)", async () => {

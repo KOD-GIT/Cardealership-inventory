@@ -82,7 +82,6 @@ export default function VehiclePage() {
             <p className="max-w-2xl text-lg leading-7 text-dim">
               {vehicle.year ? `${vehicle.year} ` : ""}{name}, {categoryLabel(vehicle.category).toLowerCase()}. Listed at{" "}
               <Price rupees={vehicle.price} className="!text-lg text-bone" /> with {vehicle.quantity} {vehicle.quantity === 1 ? "unit" : "units"} in stock.
-              {extras.headline ? ` ${extras.headline}.` : ""}
             </p>
             <p className="max-w-2xl text-dim">The specification tab lists everything the dealership holds for this model. Items marked “Not provided” are simply not on record.</p>
           </div>

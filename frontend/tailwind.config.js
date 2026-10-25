@@ -28,7 +28,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Syne Variable"', "Syne", "Impact", "Arial Narrow", "sans-serif"],
+        display: ["Syne", "Impact", "Arial Narrow", "sans-serif"],
         sans: ['"Inter Variable"', "Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         mono: ['"JetBrains Mono Variable"', '"JetBrains Mono"', "ui-monospace", "Consolas", "monospace"],
       },

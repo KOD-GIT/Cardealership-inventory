@@ -58,7 +58,9 @@ export function parseBrowse(params: URLSearchParams): BrowseState {
 /** State -> URL. Defaults are omitted so the plain Floor URL stays clean. */
 export function serializeBrowse(state: BrowseState): URLSearchParams {
   const params = new URLSearchParams();
-  if (state.q.trim()) params.set("q", state.q.trim());
+  // Kept exactly as typed (a trailing space is part of "model 1" while it is being typed). Only an all-blank
+  // search is dropped. The filter itself ignores surrounding spaces.
+  if (state.q.trim()) params.set("q", state.q);
   if (state.category) params.set("cat", state.category);
   if (state.min !== null) params.set("min", String(state.min));
   if (state.max !== null) params.set("max", String(state.max));
@@ -69,7 +71,7 @@ export function serializeBrowse(state: BrowseState): URLSearchParams {
 }
 
 export function filterVehicles(vehicles: Vehicle[], state: BrowseState): Vehicle[] {
-  const needle = state.q.trim().toLowerCase();
+  const needle = state.q.trim().toLowerCase(); // surrounding spaces never count
   const minPaise = state.min === null ? null : toPaise(state.min);
   const maxPaise = state.max === null ? null : toPaise(state.max);
   return vehicles.filter((vehicle) => {

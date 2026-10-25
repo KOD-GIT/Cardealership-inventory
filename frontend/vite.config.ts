@@ -5,6 +5,18 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   server: { port: 5173 },
+  build: {
+    rollupOptions: {
+      output: {
+        // Long-lived libraries go in their own files so a change to the app does not re-download them.
+        manualChunks: {
+          react: ["react", "react-dom", "react-router-dom"],
+          data: ["@tanstack/react-query", "axios"],
+          forms: ["react-hook-form", "@hookform/resolvers", "zod"],
+        },
+      },
+    },
+  },
   test: {
     environment: "jsdom",
     globals: true,

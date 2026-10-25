@@ -62,7 +62,7 @@ export function VehicleCell({ vehicle, extras, actions, eagerImage = false }: Pr
 
         <div className="border-t border-line-subtle pt-3">
           <div className="grid grid-cols-2 gap-2">
-            <Link to={`/vehicle/${vehicle.id}`} className={buttonClass("ghost", "sm")}>View manifest</Link>
+            <Link to={`/vehicle/${vehicle.id}`} aria-label="View manifest" className={buttonClass("ghost", "sm")}>Manifest</Link>
             <button
               type="button" disabled={!available} onClick={() => actions.purchase(vehicle)}
               className={buttonClass("signal", "sm")} aria-label={available ? `Purchase ${name}` : `${name} is out of stock`}

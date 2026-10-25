@@ -53,7 +53,7 @@ export function SiteFooter() {
       </div>
 
       <div className="flex flex-col items-center gap-3 overflow-hidden px-4 py-10 text-center">
-        <p aria-hidden="true" className="select-none font-display font-extrabold uppercase leading-[0.8] tracking-tighter text-bone/90" style={{ fontSize: "clamp(3.5rem, 17vw, 14rem)" }}>Ignition</p>
+        <p aria-hidden="true" className="t-outline-dim select-none font-display font-extrabold uppercase leading-[0.8] tracking-tighter" style={{ fontSize: "clamp(2.25rem, 10.5vw, 12rem)" }}>Ignition</p>
         <p className="t-label text-muted">© {new Date().getFullYear()} IGNITION · Car dealership inventory</p>
       </div>
     </footer>

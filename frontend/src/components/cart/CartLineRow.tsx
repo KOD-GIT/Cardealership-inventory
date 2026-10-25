@@ -25,7 +25,7 @@ export function CartLineRow({ line, onQuantity, onRemove }: Props) {
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            {vehicle ? <Link to={`/vehicle/${vehicle.id}`} className="t-sm block truncate hover:text-signal">{name}</Link> : <p className="t-sm">{name}</p>}
+            {vehicle ? <Link to={`/vehicle/${vehicle.id}`} className="t-sm block break-words hover:text-signal">{name}</Link> : <p className="t-sm">{name}</p>}
             {vehicle ? <p className="t-data text-dim">{formatInr(line.unitPaise)} each</p> : null}
           </div>
           <button type="button" onClick={() => onRemove(item.vehicleId)} aria-label={`Remove ${name} from cart`} className="icon-btn !h-10 !w-10">

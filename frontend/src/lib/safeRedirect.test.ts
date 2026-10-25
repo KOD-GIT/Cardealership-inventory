@@ -6,7 +6,8 @@ describe("safeReturnPath (no open redirects)", () => {
     expect(safeReturnPath("/floor?cat=SUV&page=2")).toBe("/floor?cat=SUV&page=2");
   });
   it("falls back for anything that could leave the site", () => {
-    for (const evil of ["//evil.example", "/\evil.example", "https://evil.example", "javascript:alert(1)", "evil", "", "/\u0000x"]) {
+    const backslash = String.fromCharCode(92); // built from a char code so no tool can mangle the escape
+    for (const evil of ["//evil.example", `/${backslash}evil.example`, "https://evil.example", "javascript:alert(1)", "evil", "", "/\u0000x"]) {
       expect(safeReturnPath(evil)).toBe("/");
     }
   });

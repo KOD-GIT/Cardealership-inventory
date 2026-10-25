@@ -1,6 +1,6 @@
 import { Heart, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useShopUi } from "../../context/ShopUiContext";
 import { useCart, useCompare, useWatchlist } from "../../hooks/useShop";
@@ -36,14 +36,11 @@ export function SiteHeader() {
   const items = useNavItems();
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
-  const signOut = () => {
-    logout();
-    navigate("/");
-  };
+  // Only log out: a protected page then sends you to Sign in (same as an expired session); a public page stays put.
+  const signOut = logout;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-ink pt-[env(safe-area-inset-top)]">
@@ -69,7 +66,10 @@ export function SiteHeader() {
                 className="btn btn-signal relative !min-h-[2.75rem] !px-3 sm:!px-4"
               >
                 <ShoppingBag className="h-4 w-4" aria-hidden="true" />
-                <span>[ Cart : {cart.count} ]</span>
+                <span className="whitespace-nowrap">
+                  <span className="hidden sm:inline">[ Cart : {cart.count} ]</span>
+                  <span className="sm:hidden" aria-hidden="true">[ {cart.count} ]</span>
+                </span>
               </button>
               <span className="t-label hidden max-w-[11rem] truncate border-l border-line pl-3 text-dim lg:inline" title={user.email}>{user.email}</span>
               <button type="button" onClick={signOut} className={buttonClass("ghost", "sm", "hidden md:inline-flex")}>Log out</button>

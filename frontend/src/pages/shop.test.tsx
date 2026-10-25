@@ -74,7 +74,7 @@ describe("Cart", () => {
     const drawer = screen.getByRole("dialog", { name: /^Cart/ });
     await user.click(within(drawer).getByRole("button", { name: "Increase quantity of BMW 330Li M Sport" }));
     expect(within(drawer).getByRole("button", { name: "Increase quantity of BMW 330Li M Sport" })).toBeDisabled();
-    expect(within(drawer).getByText("₹1,24,00,000")).toBeInTheDocument(); // 2 x 62,00,000, exact
+    expect(within(drawer).getAllByText("₹1,24,00,000")).toHaveLength(2); // 2 x 62,00,000, exact: the line total and the subtotal
     expect(within(drawer).getByText("Maximum available")).toBeInTheDocument();
   });
 });
@@ -149,7 +149,7 @@ describe("Purchasing", () => {
     expect(cart()).toHaveTextContent("[ Cart : 0 ]");
 
     await user.click(screen.getByRole("link", { name: "Purchases" }));
-    const history = await screen.findByRole("list");
+    const history = await screen.findByRole("list", { name: "Purchases" });
     expect(within(history).getByText(/IGN-/)).toBeInTheDocument();
     expect(within(history).getByText("₹24,35,000")).toBeInTheDocument();
   });

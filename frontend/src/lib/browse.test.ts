@@ -12,6 +12,12 @@ describe("URL <-> browse state", () => {
     const original = state({ q: "bmw", category: "SEDAN", min: 100000, max: 9000000, inStockOnly: true, sort: "price-desc", page: 3 });
     expect(parseBrowse(serializeBrowse(original))).toEqual(original);
   });
+  it("keeps a space while you are typing a search (a regression: it used to be trimmed away, so 'model 1' became 'model1')", () => {
+    const typed = state({ q: "model " });
+    expect(parseBrowse(serializeBrowse(typed)).q).toBe("model ");
+    expect(filterVehicles(sampleVehicles, state({ q: "creta " }))).toHaveLength(1); // matching ignores the stray space
+    expect(serializeBrowse(state({ q: "   " })).toString()).toBe(""); // an all-blank search is not a filter
+  });
   it("keeps the plain URL clean: defaults are omitted", () => {
     expect(serializeBrowse(DEFAULT_BROWSE).toString()).toBe("");
   });

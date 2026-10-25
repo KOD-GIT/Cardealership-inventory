@@ -141,17 +141,16 @@ describe("Share", () => {
   beforeEach(() => { mockInventoryApi(); });
 
   it("copies the direct link using the stable vehicle id, and says so only after it worked", async () => {
-    const writeText = vi.fn().mockResolvedValue(undefined);
-    Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
-    const { user } = renderApp("/vehicle/5", { signedInAs: customer });
+    const { user } = renderApp("/vehicle/5", { signedInAs: customer }); // userEvent.setup() installs navigator.clipboard
+    const writeText = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue(undefined);
     await user.click(await screen.findByRole("button", { name: /Share/ }));
     expect(writeText).toHaveBeenCalledWith(`${window.location.origin}/vehicle/5`);
     expect(await screen.findByText("Link copied")).toBeInTheDocument();
   });
 
   it("does NOT claim success when copying fails, and offers a selectable link instead", async () => {
-    Object.defineProperty(navigator, "clipboard", { value: { writeText: vi.fn().mockRejectedValue(new Error("denied")) }, configurable: true });
     const { user } = renderApp("/vehicle/5", { signedInAs: customer });
+    vi.spyOn(navigator.clipboard, "writeText").mockRejectedValue(new Error("denied"));
     await user.click(await screen.findByRole("button", { name: /Share/ }));
     expect(screen.queryByText("Link copied")).not.toBeInTheDocument();
     const field = await screen.findByLabelText(/Copying was blocked/);

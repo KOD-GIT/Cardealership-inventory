@@ -76,7 +76,7 @@ export function InventoryStrip({ items, actions }: { items: Featured[]; actions:
               <div className="flex flex-1 flex-col justify-between gap-4 border-t border-line p-5">
                 <div>
                   <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="t-sm min-w-0 truncate">{name}</h3>
+                    <h3 className="t-sm min-w-0">{name}</h3>
                     <Price rupees={vehicle.price} soldOut={!available} className="shrink-0 font-bold" />
                   </div>
                   <p className="t-label mt-2 text-dim">{[vehicle.year, extras.headline ?? categoryLabel(vehicle.category)].filter(Boolean).join(" · ")}</p>

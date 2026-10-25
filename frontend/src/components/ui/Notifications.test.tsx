@@ -13,7 +13,7 @@ const setup = (ui: React.ReactElement) => {
 };
 const tick = (ms: number) => act(() => { vi.advanceTimersByTime(ms); });
 
-beforeEach(() => vi.useFakeTimers());
+beforeEach(() => vi.useFakeTimers({ shouldAdvanceTime: true }));
 afterEach(() => vi.useRealTimers());
 
 describe("notifications with Undo", () => {

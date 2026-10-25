@@ -25,7 +25,7 @@ export default function HistoryPage() {
         {myPurchases.length === 0 ? (
           <EmptyState title="No purchases yet" action={{ label: "Enter the floor", to: "/floor" }}>Vehicles you purchase from this device will be listed here with the price you paid.</EmptyState>
         ) : (
-          <ul className="border border-line">
+          <ul aria-label="Purchases" className="border border-line">
             {myPurchases.map((record) => <Entry key={record.id} record={record} exists={(id) => byId.has(id)} />)}
           </ul>
         )}

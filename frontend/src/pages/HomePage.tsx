@@ -111,6 +111,13 @@ export default function HomePage() {
 
       {/* 04 · MANIFESTO */}
       <section aria-label="What we stand for" className="border-b border-line bg-signal text-signal-ink selection:bg-ink selection:text-bone">
+        <Marquee label="Refuse ordinary" tone="signal" className="border-b border-signal-ink/25 py-5">
+          {[0, 1].map((i) => (
+            <span key={i} className="t-xl flex items-center gap-8">
+              Refuse ordinary <span aria-hidden="true">✳</span> <span className="t-outline-ink">Refuse ordinary</span> <span aria-hidden="true">✳</span>
+            </span>
+          ))}
+        </Marquee>
         <div className="grid md:grid-cols-3">
           {[
             ["01 / 03", "Identity", "Every build begins with the person behind the wheel: their taste, their road, their presence.", "Core protocol"],

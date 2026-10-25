@@ -40,11 +40,21 @@
 
 @layer components {
   /* ---------- typography ---------- */
+  /*
+   * Syne ExtraBold is very wide (about 0.95em per capital), so the hero word "THEATRE." needs ~7.8em of room.
+   * Below 1024px the headline owns the full width; from 1024px it sits in a 7/12 column, so it is sized from
+   * the viewport accordingly. Both are chosen so the longest word always fits with its padding.
+   */
   .t-display {
     @apply font-display font-extrabold uppercase;
-    font-size: clamp(2.75rem, 11vw, 7.5rem);
-    line-height: 0.88;
+    font-size: clamp(2.25rem, 11vw, 6.5rem);
+    line-height: 0.9;
     letter-spacing: -0.05em;
+  }
+  @media (min-width: 1024px) {
+    .t-display {
+      font-size: clamp(3rem, 5.4vw, 6rem);
+    }
   }
   .t-xl {
     @apply font-display font-extrabold uppercase;
@@ -76,14 +86,25 @@
   .tnum {
     font-variant-numeric: tabular-nums;
   }
-  /* one outlined keyword inside a heading (the "outline trick") */
-  .t-outline {
-    -webkit-text-stroke: 2px #ff4a1c;
-    color: transparent;
+  /*
+   * Outlined words (the "outline trick"). The stroke is painted BEHIND a fill that matches the background
+   * (paint-order: stroke fill), so only the outer half of the stroke shows. That hides the overlapping
+   * contours inside the glyphs, which otherwise show up as stray lines. Each class is for one background.
+   */
+  .t-outline { /* orange outline on the dark page */
+    -webkit-text-stroke: 4px #ff4a1c;
+    paint-order: stroke fill;
+    color: #0c0c0c;
   }
-  .t-outline-dim {
-    -webkit-text-stroke: 1.5px rgba(237, 233, 225, 0.4);
-    color: transparent;
+  .t-outline-ink { /* dark outline on the orange band */
+    -webkit-text-stroke: 4px #120500;
+    paint-order: stroke fill;
+    color: #ff4a1c;
+  }
+  .t-outline-dim { /* faint bone outline on the dark page */
+    -webkit-text-stroke: 3px rgba(237, 233, 225, 0.4);
+    paint-order: stroke fill;
+    color: #0c0c0c;
   }
 
   /* ---------- photography: restrained at rest, natural colour on hover / focus / selection ---------- */
@@ -162,8 +183,8 @@
   .input {
     @apply min-h-[2.75rem] w-full border border-line bg-charcoal px-3 py-2 text-bone placeholder:text-muted;
   }
+  /* The orange border AND the global 2px orange outline both show on focus, so it is unmistakable. */
   .input:focus-visible {
-    outline: none;
     border-color: #ff4a1c;
   }
   .input[aria-invalid="true"] {
