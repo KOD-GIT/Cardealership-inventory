@@ -15,4 +15,7 @@ class UserRepository:
         raise NotImplementedError
 
     def add(self, user: User) -> User:
-        raise NotImplementedError
+        self._db.add(user)
+        self._db.commit()
+        self._db.refresh(user)
+        return user

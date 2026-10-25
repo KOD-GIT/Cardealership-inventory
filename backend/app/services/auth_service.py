@@ -1,4 +1,7 @@
 """Registration and login rules."""
+from app.core.security import hash_password
+from app.models.enums import Role
+from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserRead
 
@@ -9,7 +12,8 @@ class AuthService:
 
     def register(self, data: RegisterRequest) -> UserRead:
         """Create a USER (never an ADMIN). Reject duplicate emails."""
-        raise NotImplementedError
+        user = User(email=data.email, hashed_password=hash_password(data.password), role=Role.USER)
+        return UserRead.model_validate(self._users.add(user))
 
     def login(self, data: LoginRequest) -> TokenResponse:
         """Verify credentials and return a JWT. Same error for unknown email / bad password."""
