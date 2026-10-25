@@ -19,3 +19,11 @@ def test_get_current_user_returns_the_user_for_a_valid_token(client, db_session)
     user = get_current_user(bearer, db_session)
     assert user.id == registered["id"]
     assert user.email == "jane@example.com"
+
+
+def test_get_current_user_with_a_malformed_token_raises_401(db_session) -> None:
+    bearer = HTTPAuthorizationCredentials(scheme="Bearer", credentials="not-a-real-token")
+    with pytest.raises(HTTPException) as error:
+        get_current_user(bearer, db_session)
+    assert error.value.status_code == 401
+    assert error.value.headers == {"WWW-Authenticate": "Bearer"}
