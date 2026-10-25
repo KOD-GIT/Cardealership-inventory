@@ -41,6 +41,8 @@ class VehicleRepository:
             query = query.where(Vehicle.category == params.category)
         if params.min_price is not None:
             query = query.where(Vehicle.price_cents >= to_cents(params.min_price))
+        if params.max_price is not None:
+            query = query.where(Vehicle.price_cents <= to_cents(params.max_price))
         return list(self._db.scalars(query.order_by(Vehicle.id).offset(skip).limit(limit)))
 
     def delete(self, vehicle: Vehicle) -> None:
