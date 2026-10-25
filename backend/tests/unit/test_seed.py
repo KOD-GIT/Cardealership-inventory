@@ -47,3 +47,10 @@ def test_the_seeded_admin_can_log_in_through_the_api(client, db_session) -> None
     )
     assert response.status_code == 200
     assert response.json()["user"]["role"] == "ADMIN"
+
+
+def test_every_seeded_vehicle_has_a_local_image_path(db_session) -> None:
+    seed(db_session)
+    images = db_session.scalars(select(Vehicle.image_url)).all()
+    assert images
+    assert all(url is not None and url.startswith("/images/vehicles/") for url in images)
