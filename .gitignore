@@ -24,3 +24,4 @@ coverage/
 # Claude Code personal files (not shared)
 .claude/settings.local.json
 CLAUDE.local.md
+backend/reports/

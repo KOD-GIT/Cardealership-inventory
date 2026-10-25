@@ -8,8 +8,8 @@ Frontend: React 18, TypeScript, Vite, Tailwind, TanStack Query, React Hook Form 
 - The developer must understand and be able to explain every line in an interview. Work in small steps, pair-programming style. Never build a whole phase at once unless I ask.
 - For each test or change, say in 1 to 3 plain sentences what it does and why. Keep replies short. No emojis.
 - Before editing more than one file, or doing anything hard to undo, say what you are about to do and wait.
-- Prefer the slash commands in `.claude/commands/` (`/status`, `/phase`, `/red`, `/green`, `/refactor`, `/commit-ai`, `/final-check`, `/setup`).
-- Docs, read on demand (not every session): `docs/BUILD_GUIDE.md` (master plan, TDD map), `docs/NEXT_STEPS.md` (phase test lists and verified hints), `docs/SETUP_GUIDE.md`, `docs/API_CONTRACT.md`, `docs/ER_DIAGRAM.md`, `docs/HANDOFF.md`.
+- Prefer the slash commands in `.claude/commands/` (`/status`, `/phase`, `/red`, `/green`, `/refactor`, `/commit-ai`, `/final-check`).
+- Docs, read on demand (not every session): `docs/NEXT_STEPS.md` (phase test lists and verified hints), `docs/API_CONTRACT.md`, `docs/ER_DIAGRAM.md`, `docs/HANDOFF.md`.
 
 ## State at handoff (volatile: run /status for the truth)
 - Backend is complete (all 11 TDD phases, 141 tests, ruff clean). Migrations 0001 and 0002 (prices are BIGINT paise so crore-level prices fit). The seed creates the admin and 14 vehicles with photos.
@@ -22,7 +22,6 @@ Frontend: React 18, TypeScript, Vite, Tailwind, TanStack Query, React Hook Form 
 | Task | Command (working directory) |
 |---|---|
 | Start PostgreSQL | `docker compose up -d db` (repo root) |
-| One-shot setup of the whole environment | `/setup` |
 | Create `.env` files + SECRET_KEY | `python -m app.scripts.setup_env` (backend) |
 | Environment health check | `python -m app.scripts.doctor` (backend) |
 | Create/upgrade tables | `python -m alembic upgrade head` (backend) |
@@ -99,4 +98,4 @@ Full test lists and hints per phase: `docs/NEXT_STEPS.md` Part C. Target: at lea
 - Real vs demo: vehicles, auth, purchases and restocks come from the API. Cart, watchlist, compare, recent, purchase history, stock movements and admin home-page choices are a labelled demo layer in localStorage (`src/data/stores.ts`). Never present them as server data, and never invent specs, VINs or inspection claims: show "Not provided".
 
 ## Deliverables still to produce (kata)
-Public repo, README (what it does, setup, real screenshots, My AI Usage in the developer's own words, test report), `PROMPTS.md` with raw unedited chat logs (export with `/export`), AI co-author trailer on AI-assisted commits, green CI, optional live link. Details: `docs/BUILD_GUIDE.md` Stages 8 and 9, or run `/final-check`.
+Public repo, README (what it does, setup, real screenshots, My AI Usage in the developer's own words, test report), `PROMPTS.md` with raw unedited chat logs (export with `/export`), AI co-author trailer on AI-assisted commits, green CI, optional live link. Run `/final-check`.
