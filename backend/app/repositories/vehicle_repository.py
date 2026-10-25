@@ -2,6 +2,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.money import to_cents
 from app.models.vehicle import Vehicle
 from app.schemas.vehicle import VehicleSearchCriteria
 
@@ -38,6 +39,8 @@ class VehicleRepository:
             query = query.where(Vehicle.model.ilike(f"%{params.model}%"))
         if params.category:
             query = query.where(Vehicle.category == params.category)
+        if params.min_price is not None:
+            query = query.where(Vehicle.price_cents >= to_cents(params.min_price))
         return list(self._db.scalars(query.order_by(Vehicle.id).offset(skip).limit(limit)))
 
     def delete(self, vehicle: Vehicle) -> None:
