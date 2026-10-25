@@ -10,7 +10,10 @@ class VehicleRepository:
         self._db = db
 
     def add(self, vehicle: Vehicle) -> Vehicle:
-        raise NotImplementedError
+        self._db.add(vehicle)
+        self._db.commit()
+        self._db.refresh(vehicle)
+        return vehicle
 
     def get(self, vehicle_id: int) -> Vehicle | None:
         raise NotImplementedError

@@ -1,4 +1,6 @@
 """Vehicle CRUD + search rules."""
+from app.core.money import to_cents
+from app.models.vehicle import Vehicle
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.vehicle import VehicleCreate, VehicleRead, VehicleSearchCriteria, VehicleUpdate
 
@@ -8,7 +10,8 @@ class VehicleService:
         self._vehicles = vehicles
 
     def create(self, data: VehicleCreate) -> VehicleRead:
-        raise NotImplementedError
+        vehicle = Vehicle(**data.model_dump(exclude={"price"}), price_cents=to_cents(data.price))
+        return VehicleRead.from_model(self._vehicles.add(vehicle))
 
     def list_all(self, skip: int = 0, limit: int = 50) -> list[VehicleRead]:
         raise NotImplementedError
