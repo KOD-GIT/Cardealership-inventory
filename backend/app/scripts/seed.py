@@ -15,12 +15,10 @@ from app.repositories.user_repository import UserRepository
 def seed(db: Session) -> None:
     """Create the admin account and the sample vehicles. Safe to run twice."""
     settings = get_settings()
-    admin = User(
-        email=settings.admin_email.lower(),
-        hashed_password=hash_password(settings.admin_password),
-        role=Role.ADMIN,
-    )
-    UserRepository(db).add(admin)
+    users = UserRepository(db)
+    email = settings.admin_email.lower()
+    if users.get_by_email(email) is None:  # an existing admin is left alone, even its password
+        users.add(User(email=email, hashed_password=hash_password(settings.admin_password), role=Role.ADMIN))
 
 
 def main() -> None:
