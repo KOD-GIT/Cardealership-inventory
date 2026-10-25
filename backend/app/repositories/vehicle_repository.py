@@ -34,6 +34,8 @@ class VehicleRepository:
         query = select(Vehicle)
         if params.make:
             query = query.where(Vehicle.make.ilike(f"%{params.make}%"))
+        if params.model:
+            query = query.where(Vehicle.model.ilike(f"%{params.model}%"))
         return list(self._db.scalars(query.order_by(Vehicle.id).offset(skip).limit(limit)))
 
     def delete(self, vehicle: Vehicle) -> None:
