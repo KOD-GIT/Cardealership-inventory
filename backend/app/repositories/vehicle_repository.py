@@ -1,5 +1,5 @@
 """Data access for vehicles. No business rules here - only queries."""
-from sqlalchemy import ColumnElement, select
+from sqlalchemy import ColumnElement, select, update
 from sqlalchemy.orm import InstrumentedAttribute, Session
 
 from app.core.money import to_cents
@@ -56,8 +56,16 @@ class VehicleRepository:
         self._db.commit()
 
     def decrement_stock(self, vehicle_id: int, quantity: int) -> bool:
-        """Atomic conditional UPDATE (quantity >= :q). Return False when stock is insufficient."""
-        raise NotImplementedError
+        """Atomic conditional UPDATE (quantity >= :q). Return False when stock is insufficient.
+
+        Does not commit: the caller commits it together with the purchase row, in one transaction.
+        """
+        statement = (
+            update(Vehicle)
+            .where(Vehicle.id == vehicle_id, Vehicle.quantity >= quantity)
+            .values(quantity=Vehicle.quantity - quantity)
+        )
+        return self._db.execute(statement).rowcount == 1
 
     def increment_stock(self, vehicle_id: int, quantity: int) -> None:
         raise NotImplementedError

@@ -8,7 +8,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
-from app.api.deps import get_current_user, get_vehicle_service, require_admin
+from app.api.deps import get_current_user, get_inventory_service, get_vehicle_service, require_admin
 from app.models.user import User
 from app.schemas.vehicle import (
     PurchaseRequest,
@@ -18,6 +18,7 @@ from app.schemas.vehicle import (
     VehicleSearchCriteria,
     VehicleUpdate,
 )
+from app.services.inventory_service import InventoryService
 from app.services.vehicle_service import VehicleService
 
 router = APIRouter(prefix="/api/vehicles", tags=["vehicles"])
@@ -75,9 +76,11 @@ def delete_vehicle(
 def purchase_vehicle(
     vehicle_id: int,
     payload: PurchaseRequest | None = None,
-    _user: User = Depends(get_current_user),
+    user: User = Depends(get_current_user),
+    service: InventoryService = Depends(get_inventory_service),
 ) -> VehicleRead:
-    raise _NOT_IMPLEMENTED
+    quantity = payload.quantity if payload else 1
+    return service.purchase(vehicle_id, user.id, quantity)
 
 
 @router.post("/{vehicle_id}/restock", response_model=VehicleRead)

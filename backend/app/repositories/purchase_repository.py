@@ -11,4 +11,10 @@ class PurchaseRepository:
     def add(
         self, user_id: int, vehicle_id: int, quantity: int, unit_price_cents: int
     ) -> Purchase:
-        raise NotImplementedError
+        """Save the purchase and commit. Commits the pending stock UPDATE in the same transaction."""
+        purchase = Purchase(
+            user_id=user_id, vehicle_id=vehicle_id, quantity=quantity, unit_price_cents=unit_price_cents
+        )
+        self._db.add(purchase)
+        self._db.commit()
+        return purchase

@@ -14,7 +14,10 @@ class InventoryService:
 
         Raise VehicleNotFoundError (404) / OutOfStockError (409).
         """
-        raise NotImplementedError
+        vehicle = self._vehicles.get(vehicle_id)
+        self._vehicles.decrement_stock(vehicle_id, quantity)
+        self._purchases.add(user_id, vehicle_id, quantity, vehicle.price_cents)
+        return VehicleRead.from_model(vehicle)
 
     def restock(self, vehicle_id: int, quantity: int) -> VehicleRead:
         """Increase stock. Admin-only is enforced at the API layer (`require_admin`)."""
