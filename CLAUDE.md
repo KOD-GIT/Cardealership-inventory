@@ -12,9 +12,9 @@ Frontend: React 18, TypeScript, Vite, Tailwind, TanStack Query, React Hook Form 
 - Docs, read on demand (not every session): `docs/BUILD_GUIDE.md` (master plan, TDD map), `docs/NEXT_STEPS.md` (phase test lists and verified hints), `docs/SETUP_GUIDE.md`, `docs/API_CONTRACT.md`, `docs/ER_DIAGRAM.md`, `docs/HANDOFF.md`.
 
 ## State at handoff (volatile: run /status for the truth)
-- Frontend is complete: pages, components, 3D card, 72 tests.
-- Backend skeleton is done (models, migration, schemas, route declarations, `doctor`, `setup_env`, 40 tests). The logic is NOT written: password/JWT helpers, money helpers, repositories, services, auth dependencies and the seed script are stubs that raise `NotImplementedError`, and the vehicle/auth routes answer 501.
-- Next work: backend TDD phases 1 to 11, then one frontend feature test-first, then integration, README, test report, final checks.
+- Backend is complete (all 11 TDD phases, 141 tests, ruff clean). Migrations 0001 and 0002 (prices are BIGINT paise so crore-level prices fit). The seed creates the admin and 14 vehicles with photos.
+- Frontend is the IGNITION design (branch `redesign-ignition`; `main` still has the older Showroom UI): Home, The Floor, vehicle manifest, cart, watchlist, compare, purchase history, The Ledger. 204 tests.
+- Next work: review and merge the redesign branch, then the README "My AI Usage" in the developer's own words, `PROMPTS.md`, final checks.
 
 ## Commands
 `python` below means the project's virtual-environment Python: `backend/.venv/bin/python` (macOS, Linux, WSL) or `backend\.venv\Scripts\python.exe` (Windows). Never activate the venv inside a command.
@@ -88,12 +88,15 @@ Full test lists and hints per phase: `docs/NEXT_STEPS.md` Part C. Target: at lea
 - Registration race: also catch `IntegrityError` on the unique email index and return the same 409. Treat emails case-insensitively (lowercase).
 - Alembic: native PostgreSQL enums outlive their tables, so the downgrade drops `role` and `vehiclecategory` explicitly.
 - Backend tests use real PostgreSQL; each test runs in a rolled-back transaction (fixtures `client`, `db_session` in `backend/tests/conftest.py`).
-- Frontend: jsdom has no `PointerEvent` (polyfilled in `frontend/src/test/setup.ts`); tests use MSW (`onUnhandledRequest: "error"`). The 3D scene is lazy-loaded and only mounted while a card is engaged (WebGL context cap).
+- Frontend tests use MSW (`onUnhandledRequest: "error"`) and `mockInventoryApi()` in `frontend/src/test/api.ts`, a stateful stand-in for the inventory API. Under fake timers use `vi.useFakeTimers({ shouldAdvanceTime: true })` or Testing Library hangs. `userEvent.setup()` replaces `navigator.clipboard`, so spy on it after setup.
+- Outlined text (`-webkit-text-stroke`) needs `paint-order: stroke fill` and a static (not variable) font, or overlapping glyph contours show as stray lines. Syne is the static `@fontsource/syne`.
+- API errors are plain words (`{"detail": "Out of stock"}`), set per class in `backend/app/core/exceptions.py`. The frontend shows `detail` to people, so never let a class name through.
 
 ## Frontend conventions
-- Pages in `src/pages`, one component per job under `src/components/{ui,layout,vehicles,admin,vehicle3d}`, data hooks in `src/hooks/useVehicles.ts`, API modules in `src/api`.
-- Design tokens are in `tailwind.config.js` and were checked for WCAG AA contrast (muted text `#566174`, amber text `#7A4E08`). Keep text at 12 px or more, every input labelled, every icon-only button with an `aria-label`, visible focus ring, reduced-motion respected.
-- Show only data the API provides: make, model, category, price, quantity, year, image. No invented features.
+- Pages in `src/pages`, components under `src/components/{ui,layout,vehicles,cart,admin}`, API modules in `src/api`, shared inventory query `useInventory` in `src/hooks/useVehicles.ts` (one list feeds every screen), pure rules in `src/lib` (money, browse, cart, compare, csv), the demo layer in `src/data`.
+- Look: square corners, hairline borders, no shadows or glass, orange `#FF4A1C` as the single accent, lime only for healthy stock. Tokens are in `tailwind.config.js` (muted text opacities chosen for WCAG AA). Keep text at 12 px or more, every input labelled, every icon-only button with an `aria-label`, visible focus ring, reduced-motion respected.
+- Money is integer paise in the browser (`src/lib/money.ts`), shown with Indian grouping. Newest = `created_at`, never the model year. Low stock is 2 units or fewer.
+- Real vs demo: vehicles, auth, purchases and restocks come from the API. Cart, watchlist, compare, recent, purchase history, stock movements and admin home-page choices are a labelled demo layer in localStorage (`src/data/stores.ts`). Never present them as server data, and never invent specs, VINs or inspection claims: show "Not provided".
 
 ## Deliverables still to produce (kata)
 Public repo, README (what it does, setup, real screenshots, My AI Usage in the developer's own words, test report), `PROMPTS.md` with raw unedited chat logs (export with `/export`), AI co-author trailer on AI-assisted commits, green CI, optional live link. Details: `docs/BUILD_GUIDE.md` Stages 8 and 9, or run `/final-check`.

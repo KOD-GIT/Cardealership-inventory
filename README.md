@@ -1,10 +1,12 @@
 # Car Dealership Inventory System
 
-A full-stack inventory app for a car dealership, built as a TDD kata.
-Users register and log in, browse/search vehicles and purchase them (stock decreases).
-Admins can also add, update, delete and restock vehicles.
+A full-stack inventory app for a car dealership, built as a TDD kata, with an **IGNITION** frontend (a dark,
+square-cornered, typographic design).
+Users register and log in, browse and filter the floor, compare vehicles, keep a watchlist, fill a cart and purchase
+(stock decreases). Administrators also add, edit, restock, feature and delete vehicles from **The Ledger**.
 
-> **Status:** skeleton. Structure, schema, migration and API contract are in place; features are built test-first.
+> **Status:** the API (register, login, vehicles, search, purchase, restock, seed) and the IGNITION frontend are complete and
+> tested. See "What is real and what is demo" below.
 
 ## Tech stack
 | Layer | Tech |
@@ -12,7 +14,7 @@ Admins can also add, update, delete and restock vehicles.
 | API | Python 3.12, FastAPI, SQLAlchemy 2, Alembic, Pydantic v2 |
 | Auth | JWT (PyJWT, HS256), bcrypt |
 | Database | PostgreSQL 16 (via Docker Compose), psycopg 3 |
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form + Zod, React Three Fiber (3D cards) |
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form + Zod. Fonts: Syne, Inter, JetBrains Mono (bundled) |
 | Tests | pytest + pytest-cov (backend), Vitest + Testing Library + MSW (frontend) |
 
 ## Documentation
@@ -57,6 +59,9 @@ npm run dev                                            # http://localhost:5173
 docker compose up --build        # PostgreSQL, API :8000, UI :3000
 ```
 
+Open the app and sign in, or register. The home page is public; the floor and everything that shows prices and
+stock needs an account, because the API requires a login for vehicle data.
+
 ### Seeded admin (for reviewers)
 | Email | Password |
 |---|---|
@@ -71,27 +76,42 @@ cd frontend && npm test
 ```
 **Test report:** _paste the final pytest + coverage summary here._
 
+## The IGNITION frontend
+| Screen | What it does |
+|---|---|
+| **Home** (public) | Split hero, featured-vehicle carousel (previous/next, indicators, pause), a native scroll strip, live inventory figures, recently viewed |
+| **The Floor** | Square-cell inventory grid: search, category tabs, min/max price, in-stock toggle, removable filter chips, sort (newest arrival, price, name, stock), pagination. All of it lives in the URL, so Back, refresh and shared links restore it |
+| **Vehicle manifest** | Photo gallery with fullscreen viewer, specifications ("Not provided" where unknown), add to cart, purchase now, watchlist, compare, share link. Administrators also see the stock movements |
+| **Cart** | Slide-over drawer and a full page. Quantities limited to stock, exact totals, Undo on removal, confirmation, honest partial-failure reporting |
+| **Watchlist, Compare, Purchases** | Saved vehicles with Undo, side-by-side comparison of up to three (differences only), purchase history with price snapshots |
+| **The Ledger** (admin) | Key figures, low-stock manifest, add / edit / restock / feature / delete with validation and an unsaved-changes guard, stock movements, a real CSV export |
+
+### What is real and what is demo
+- **Real, from the API:** accounts and sign in, every vehicle and its stock and price, purchases (the stock really drops, 409 when there is not enough), restocks, edits and deletes. The frontend never replaces these with mock data.
+- **Demo, saved in this browser only** (clearly labelled in the app): the cart, watchlist, comparison list, recently viewed, purchase history, the stock-movement log, monthly sales, and the administrator's home-page choices (featured, new arrival, carousel order). They are not shared between devices or people, and are not secure storage.
+- **Not provided by the API, so shown as "Not provided":** VIN, most specifications and extra photographs. Specifications and gallery photos exist only for the models whose figures came with the design.
+- **Money** is carried as integer paise in the browser, shown with Indian digit grouping (₹2,42,00,000). Prices are stored as 64-bit integers in the database, so crore-level prices fit.
+
 ## Screenshots
-Captured from the production build against a mocked API while the backend was still in progress; retake them
-against the real API before submitting.
+Taken from the real app against a freshly seeded database.
 
-| Login | Dashboard |
+| Home | The Floor |
 |---|---|
-| ![Login](docs/screenshots/login.png) | ![Dashboard](docs/screenshots/dashboard.png) |
+| ![Home](docs/screenshots/home.png) | ![The Floor](docs/screenshots/floor.png) |
 
-**3D vehicle card:** parked (only the nose visible), on hover, after dragging to rotate, and after leaving.
-
-![3D card states](docs/screenshots/card-3d-states.png)
-
-| Admin | Admin dialogs |
+| Vehicle manifest | Cart drawer |
 |---|---|
-| ![Admin](docs/screenshots/admin.png) | ![Admin dialogs](docs/screenshots/admin-modals.png) |
+| ![Vehicle manifest](docs/screenshots/vehicle.png) | ![Cart drawer](docs/screenshots/cart-drawer.png) |
 
-![Mobile](docs/screenshots/mobile.png)
+![Compare](docs/screenshots/compare.png)
 
-**Dashboard states:** loading skeletons, empty search, load error, and the purchase and sold-out toasts.
+| The Ledger | Add vehicle, with validation |
+|---|---|
+| ![The Ledger](docs/screenshots/ledger.png) | ![Add vehicle](docs/screenshots/ledger-form.png) |
 
-![Dashboard states](docs/screenshots/states.png)
+| Sign in | Phone: floor | Phone: vehicle |
+|---|---|---|
+| ![Sign in](docs/screenshots/login.png) | ![Phone floor](docs/screenshots/mobile-floor.png) | ![Phone vehicle](docs/screenshots/mobile-vehicle.png) |
 
 ## My AI Usage
 **Tools used:** _Claude (planning, backend skeleton, frontend), Google Stitch (UI exploration). Add any others._
@@ -106,11 +126,10 @@ Raw chat logs are in [`PROMPTS.md`](PROMPTS.md).
 ## Project structure
 ```
 backend/   app/{api,services,repositories,models,schemas,core,db,scripts}  alembic/  tests/{unit,integration}
-frontend/  src/{api,components,pages,hooks,context,types,test}
+frontend/  src/{api,components,pages,hooks,context,data,lib,types,test}   (data/ holds the demo layer)
 docs/      ER_DIAGRAM.md  API_CONTRACT.md  BUILD_GUIDE.md  SETUP_GUIDE.md  NEXT_STEPS.md
 ```
 
 ## Credits
-- Hero photo on the sign-in and register screens: generated with Google Stitch (AI), compressed to WebP.
-- Fonts: Archivo Narrow and IBM Plex Sans (SIL Open Font License) via `@fontsource-variable`. Icons: `lucide-react`.
-- If you add third-party `.glb` car models, list their authors and licences here.
+- Vehicle photographs and the IGNITION visual design: generated with Google Stitch (AI) and supplied as a design export. They are small (about 500 px wide), so large views are soft, and five were cropped to remove screenshot borders and a competing brand sign that were baked into the pictures. Unused: one Islero photo (different paint colour from the one used) and the supplied wordmark PNG.
+- Fonts: Syne, Inter and JetBrains Mono (SIL Open Font License) via `@fontsource`. Icons: `lucide-react`.

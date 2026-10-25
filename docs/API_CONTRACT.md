@@ -51,8 +51,11 @@ Errors: `401` wrong email or password (same message for both, so accounts can't 
 Vehicle object:
 ```json
 { "id": 7, "make": "Toyota", "model": "Camry", "category": "SEDAN",
-  "price": 27999.99, "quantity": 4, "year": 2024, "image_url": null }
+  "price": 27999.99, "quantity": 4, "year": 2024, "image_url": null,
+  "created_at": "2026-10-25T09:30:00Z" }
 ```
+`price` is in rupees (a JSON number, at most `99,999,999.99`). `created_at` is when the vehicle arrived in the inventory (ISO 8601, UTC);
+the "newest arrival" sort uses it, never the model year. Requests never send `id` or `created_at`.
 Categories: `SEDAN, SUV, HATCHBACK, COUPE, CONVERTIBLE, TRUCK, VAN`.
 
 | Endpoint | Request | Success | Errors |
@@ -74,7 +77,8 @@ Route order matters: declare `/search` **before** `/{vehicle_id}`.
 { "quantity": 1 }
 // response: the updated vehicle
 { "id": 7, "make": "Toyota", "model": "Camry", "category": "SEDAN",
-  "price": 27999.99, "quantity": 3, "year": 2024, "image_url": null }
+  "price": 27999.99, "quantity": 3, "year": 2024, "image_url": null,
+  "created_at": "2026-10-25T09:30:00Z" }
 ```
 Errors: `401` · `404` vehicle not found · `409` out of stock / not enough stock · `422` quantity < 1.
 Side effect: inserts a row into `purchases` (user, vehicle, quantity, price snapshot).
@@ -95,4 +99,3 @@ Response: the updated vehicle. Errors: `401` · `403` · `404` · `422`.
 | 404 | vehicle not found |
 | 409 | duplicate email, out of stock |
 | 422 | request validation failed |
-| 501 | endpoint skeleton exists but is not implemented yet (temporary) |
