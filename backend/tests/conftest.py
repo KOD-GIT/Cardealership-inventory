@@ -13,9 +13,12 @@ from sqlalchemy.orm import Session
 
 import app.models  # noqa: F401  (registers models on Base.metadata)
 from app.core.config import get_settings
+from app.core.security import create_access_token, hash_password
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
+from app.models.enums import Role
+from app.models.user import User
 from app.scripts.doctor import unsafe_test_database
 
 
@@ -56,5 +59,22 @@ def client(db_session: Session) -> Iterator[TestClient]:
     app.dependency_overrides.clear()
 
 
-# TODO (TDD phases 3-5): add fixtures once registration/login exist, e.g.
-#   user_token / admin_token / auth_headers(token), and a `make_vehicle(...)` factory.
+def _auth_headers_for(db_session: Session, email: str, role: Role) -> dict[str, str]:
+    """Create a user with this role straight in the database and return a Bearer header for them."""
+    user = User(email=email, hashed_password=hash_password("Secret123"), role=role)
+    db_session.add(user)
+    db_session.commit()
+    return {"Authorization": f"Bearer {create_access_token(str(user.id), role.value)}"}
+
+
+@pytest.fixture()
+def user_headers(db_session: Session) -> dict[str, str]:
+    return _auth_headers_for(db_session, "user@example.com", Role.USER)
+
+
+@pytest.fixture()
+def admin_headers(db_session: Session) -> dict[str, str]:
+    return _auth_headers_for(db_session, "admin@example.com", Role.ADMIN)
+
+
+# TODO (TDD phases 6-10): add a `make_vehicle(...)` factory once vehicles can be created.
