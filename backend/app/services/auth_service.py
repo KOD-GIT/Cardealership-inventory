@@ -22,7 +22,7 @@ class AuthService:
     def login(self, data: LoginRequest) -> TokenResponse:
         """Verify credentials and return a JWT. Same error for unknown email / bad password."""
         user = self._users.get_by_email(data.email.lower())
-        if not verify_password(data.password, user.hashed_password):
+        if user is None or not verify_password(data.password, user.hashed_password):
             raise InvalidCredentialsError
         token = create_access_token(str(user.id), user.role.value)
         return TokenResponse(access_token=token, user=UserRead.model_validate(user))
