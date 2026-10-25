@@ -4,9 +4,10 @@ import pytest
 from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, require_admin
 from app.core.security import create_access_token
 from app.models.enums import Role
+from app.models.user import User
 from app.repositories.user_repository import UserRepository
 
 
@@ -69,3 +70,10 @@ def test_get_current_user_trusts_the_stored_role_not_the_token_role(client, db_s
     claims_admin = create_access_token(str(user_id), "ADMIN")
     bearer = HTTPAuthorizationCredentials(scheme="Bearer", credentials=claims_admin)
     assert get_current_user(bearer, db_session).role == Role.USER
+
+
+def test_require_admin_raises_403_for_a_regular_user() -> None:
+    user = User(email="jane@example.com", hashed_password="x", role=Role.USER)
+    with pytest.raises(HTTPException) as error:
+        require_admin(user)
+    assert error.value.status_code == 403
