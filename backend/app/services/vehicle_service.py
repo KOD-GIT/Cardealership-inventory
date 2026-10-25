@@ -1,9 +1,9 @@
 """Vehicle CRUD + search rules."""
-from app.core.exceptions import VehicleNotFoundError
 from app.core.money import to_cents
 from app.models.vehicle import Vehicle
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.vehicle import VehicleCreate, VehicleRead, VehicleSearchCriteria, VehicleUpdate
+from app.services.lookups import get_vehicle_or_raise
 
 
 class VehicleService:
@@ -21,7 +21,7 @@ class VehicleService:
         return [VehicleRead.from_model(vehicle) for vehicle in self._vehicles.search(params, skip, limit)]
 
     def update(self, vehicle_id: int, data: VehicleUpdate) -> VehicleRead:
-        vehicle = self._get_or_raise(vehicle_id)
+        vehicle = get_vehicle_or_raise(self._vehicles, vehicle_id)
         changes = data.model_dump(exclude_unset=True)  # only the fields the client actually sent
         if "price" in changes:
             changes["price_cents"] = to_cents(changes.pop("price"))
@@ -30,10 +30,4 @@ class VehicleService:
         return VehicleRead.from_model(self._vehicles.save(vehicle))
 
     def delete(self, vehicle_id: int) -> None:
-        self._vehicles.delete(self._get_or_raise(vehicle_id))
-
-    def _get_or_raise(self, vehicle_id: int) -> Vehicle:
-        vehicle = self._vehicles.get(vehicle_id)
-        if vehicle is None:
-            raise VehicleNotFoundError
-        return vehicle
+        self._vehicles.delete(get_vehicle_or_raise(self._vehicles, vehicle_id))

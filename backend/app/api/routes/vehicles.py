@@ -6,7 +6,7 @@ Auth dependencies get wired in during TDD phase 2.
 """
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, Query, status
 
 from app.api.deps import get_current_user, get_inventory_service, get_vehicle_service, require_admin
 from app.models.user import User
@@ -22,7 +22,6 @@ from app.services.inventory_service import InventoryService
 from app.services.vehicle_service import VehicleService
 
 router = APIRouter(prefix="/api/vehicles", tags=["vehicles"])
-_NOT_IMPLEMENTED = HTTPException(status.HTTP_501_NOT_IMPLEMENTED)
 
 
 @router.post("", response_model=VehicleRead, status_code=status.HTTP_201_CREATED)
