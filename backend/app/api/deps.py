@@ -1,5 +1,5 @@
 """FastAPI dependencies: DB session, service factories, current user, role guards."""
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
@@ -32,6 +32,12 @@ def get_current_user(
     db: Session = Depends(get_db),
 ) -> User:
     """Decode the Bearer token -> load user. 401 on missing/invalid/expired token."""
+    if credentials is None:
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     raise NotImplementedError
 
 
