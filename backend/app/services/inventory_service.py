@@ -1,5 +1,5 @@
 """Purchase / restock rules (stock changes + purchases audit trail)."""
-from app.core.exceptions import OutOfStockError
+from app.core.exceptions import OutOfStockError, VehicleNotFoundError
 from app.repositories.purchase_repository import PurchaseRepository
 from app.repositories.vehicle_repository import VehicleRepository
 from app.schemas.vehicle import VehicleRead
@@ -16,6 +16,8 @@ class InventoryService:
         Raise VehicleNotFoundError (404) / OutOfStockError (409).
         """
         vehicle = self._vehicles.get(vehicle_id)
+        if vehicle is None:
+            raise VehicleNotFoundError
         if not self._vehicles.decrement_stock(vehicle_id, quantity):
             raise OutOfStockError
         self._purchases.add(user_id, vehicle_id, quantity, vehicle.price_cents)
