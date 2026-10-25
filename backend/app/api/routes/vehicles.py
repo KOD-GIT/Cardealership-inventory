@@ -32,9 +32,12 @@ def create_vehicle(
 
 @router.get("", response_model=list[VehicleRead])
 def list_vehicles(
-    skip: int = 0, limit: int = 50, _user: User = Depends(get_current_user)
+    skip: int = 0,
+    limit: int = 50,
+    _user: User = Depends(get_current_user),
+    service: VehicleService = Depends(get_vehicle_service),
 ) -> list[VehicleRead]:
-    raise _NOT_IMPLEMENTED
+    return service.list_all(skip, limit)
 
 
 @router.get("/search", response_model=list[VehicleRead])

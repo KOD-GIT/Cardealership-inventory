@@ -1,4 +1,5 @@
 """Data access for vehicles. No business rules here - only queries."""
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.vehicle import Vehicle
@@ -19,7 +20,8 @@ class VehicleRepository:
         raise NotImplementedError
 
     def list_all(self, skip: int = 0, limit: int = 50) -> list[Vehicle]:
-        raise NotImplementedError
+        query = select(Vehicle).order_by(Vehicle.id).offset(skip).limit(limit)
+        return list(self._db.scalars(query))
 
     def search(self, params: VehicleSearchCriteria, skip: int = 0, limit: int = 50) -> list[Vehicle]:
         """Dynamic filters; make/model use case-insensitive partial match."""

@@ -14,7 +14,7 @@ class VehicleService:
         return VehicleRead.from_model(self._vehicles.add(vehicle))
 
     def list_all(self, skip: int = 0, limit: int = 50) -> list[VehicleRead]:
-        raise NotImplementedError
+        return [VehicleRead.from_model(vehicle) for vehicle in self._vehicles.list_all(skip, limit)]
 
     def search(self, params: VehicleSearchCriteria, skip: int = 0, limit: int = 50) -> list[VehicleRead]:
         raise NotImplementedError
