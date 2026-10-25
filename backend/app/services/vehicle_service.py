@@ -21,9 +21,7 @@ class VehicleService:
         raise NotImplementedError
 
     def update(self, vehicle_id: int, data: VehicleUpdate) -> VehicleRead:
-        vehicle = self._vehicles.get(vehicle_id)
-        if vehicle is None:
-            raise VehicleNotFoundError
+        vehicle = self._get_or_raise(vehicle_id)
         changes = data.model_dump(exclude_unset=True)  # only the fields the client actually sent
         if "price" in changes:
             changes["price_cents"] = to_cents(changes.pop("price"))
@@ -32,7 +30,10 @@ class VehicleService:
         return VehicleRead.from_model(self._vehicles.save(vehicle))
 
     def delete(self, vehicle_id: int) -> None:
+        self._vehicles.delete(self._get_or_raise(vehicle_id))
+
+    def _get_or_raise(self, vehicle_id: int) -> Vehicle:
         vehicle = self._vehicles.get(vehicle_id)
         if vehicle is None:
             raise VehicleNotFoundError
-        self._vehicles.delete(vehicle)
+        return vehicle
