@@ -50,3 +50,8 @@ def test_deleting_a_vehicle_keeps_its_purchases_with_a_null_vehicle(
     assert kept is not None
     assert kept.vehicle_id is None
     assert kept.unit_price_cents == 2799999
+
+
+def test_unknown_vehicle_says_vehicle_not_found_in_plain_words(client, admin_headers) -> None:
+    response = client.delete("/api/vehicles/999999", headers=admin_headers)
+    assert response.json() == {"detail": "Vehicle not found"}
