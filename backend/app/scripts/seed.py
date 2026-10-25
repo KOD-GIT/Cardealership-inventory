@@ -2,6 +2,9 @@
 
 Implement AFTER registration/hash helpers exist (TDD phase 2). Must be idempotent.
 """
+import json
+from pathlib import Path
+
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
@@ -36,6 +39,11 @@ SAMPLE_VEHICLES = [
      f"{_P}cl63-amg.jpg"),
 ]
 
+# 60 more cars from the DVM-CAR dataset (CC BY-NC 4.0, see README credits), built by
+# backend/tools/build_dvm_catalogue.py. Prices are historical UK pounds converted at a fixed 105 rupees
+# per pound; stock is generated, as the dataset has none.
+DVM_VEHICLES = json.loads((Path(__file__).with_name("dvm_catalogue.json")).read_text(encoding="utf-8"))
+
 
 def seed(db: Session) -> None:
     """Create the admin account and the sample vehicles. Safe to run twice."""
@@ -45,7 +53,12 @@ def seed(db: Session) -> None:
     if users.get_by_email(email) is None:  # an existing admin is left alone, even its password
         users.add(User(email=email, hashed_password=hash_password(settings.admin_password), role=Role.ADMIN))
     vehicles = VehicleRepository(db)
-    for make, model, category, price_cents, quantity, year, image_url in SAMPLE_VEHICLES:
+    rows = list(SAMPLE_VEHICLES) + [
+        (v["make"], v["model"], VehicleCategory(v["category"]), v["price_cents"], v["quantity"], v["year"],
+         v["image_url"])
+        for v in DVM_VEHICLES
+    ]
+    for make, model, category, price_cents, quantity, year, image_url in rows:
         if vehicles.exists(make, model, year):
             continue
         vehicles.add(

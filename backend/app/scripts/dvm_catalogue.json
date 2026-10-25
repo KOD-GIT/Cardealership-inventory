@@ -1,0 +1,542 @@
+[
+ {
+  "make": "BMW",
+  "model": "Z4",
+  "category": "CONVERTIBLE",
+  "year": 2018,
+  "price_cents": 309300000,
+  "quantity": 5,
+  "image_url": "/images/vehicles/dvm-bmw-z4.jpg"
+ },
+ {
+  "make": "Mazda",
+  "model": "MX-5",
+  "category": "CONVERTIBLE",
+  "year": 2018,
+  "price_cents": 194700000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-mazda-mx-5.jpg"
+ },
+ {
+  "make": "Mercedes-Benz",
+  "model": "SL Class",
+  "category": "CONVERTIBLE",
+  "year": 2021,
+  "price_cents": 825600000,
+  "quantity": 4,
+  "image_url": "/images/vehicles/dvm-mercedes-benz-sl-class.jpg"
+ },
+ {
+  "make": "Mercedes-Benz",
+  "model": "SLK",
+  "category": "CONVERTIBLE",
+  "year": 2017,
+  "price_cents": 346100000,
+  "quantity": 5,
+  "image_url": "/images/vehicles/dvm-mercedes-benz-slk.jpg"
+ },
+ {
+  "make": "Porsche",
+  "model": "718 Boxster",
+  "category": "CONVERTIBLE",
+  "year": 2018,
+  "price_cents": 470000000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-porsche-718-boxster.jpg"
+ },
+ {
+  "make": "Vauxhall",
+  "model": "Cascada",
+  "category": "CONVERTIBLE",
+  "year": 2018,
+  "price_cents": 288300000,
+  "quantity": 6,
+  "image_url": "/images/vehicles/dvm-vauxhall-cascada.jpg"
+ },
+ {
+  "make": "Volkswagen",
+  "model": "Eos",
+  "category": "CONVERTIBLE",
+  "year": 2015,
+  "price_cents": 287400000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-volkswagen-eos.jpg"
+ },
+ {
+  "make": "Aston Martin",
+  "model": "DB11",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 1521400000,
+  "quantity": 5,
+  "image_url": "/images/vehicles/dvm-aston-martin-db11.jpg"
+ },
+ {
+  "make": "Audi",
+  "model": "TT",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 300200000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-audi-tt.jpg"
+ },
+ {
+  "make": "BMW",
+  "model": "i8",
+  "category": "COUPE",
+  "year": 2020,
+  "price_cents": 1208000000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-bmw-i8.jpg"
+ },
+ {
+  "make": "Bentley",
+  "model": "Continental",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 1473200000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-bentley-continental.jpg"
+ },
+ {
+  "make": "Ferrari",
+  "model": "488",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 1919300000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-ferrari-488.jpg"
+ },
+ {
+  "make": "Ford",
+  "model": "Mustang",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 344300000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-ford-mustang.jpg"
+ },
+ {
+  "make": "Jaguar",
+  "model": "F-Type",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 527500000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-jaguar-f-type.jpg"
+ },
+ {
+  "make": "Lamborghini",
+  "model": "Huracan",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 1631700000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-lamborghini-huracan.jpg"
+ },
+ {
+  "make": "McLaren",
+  "model": "570S",
+  "category": "COUPE",
+  "year": 2021,
+  "price_cents": 1729900000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-mclaren-570s.jpg"
+ },
+ {
+  "make": "Nissan",
+  "model": "GT-R",
+  "category": "COUPE",
+  "year": 2018,
+  "price_cents": 844900000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-nissan-gt-r.jpg"
+ },
+ {
+  "make": "Porsche",
+  "model": "911",
+  "category": "COUPE",
+  "year": 2020,
+  "price_cents": 817900000,
+  "quantity": 4,
+  "image_url": "/images/vehicles/dvm-porsche-911.jpg"
+ },
+ {
+  "make": "Toyota",
+  "model": "GT86",
+  "category": "COUPE",
+  "year": 2021,
+  "price_cents": 278200000,
+  "quantity": 5,
+  "image_url": "/images/vehicles/dvm-toyota-gt86.jpg"
+ },
+ {
+  "make": "Audi",
+  "model": "A3",
+  "category": "HATCHBACK",
+  "year": 2020,
+  "price_cents": 236200000,
+  "quantity": 5,
+  "image_url": "/images/vehicles/dvm-audi-a3.jpg"
+ },
+ {
+  "make": "Ford",
+  "model": "Fiesta",
+  "category": "HATCHBACK",
+  "year": 2018,
+  "price_cents": 136200000,
+  "quantity": 6,
+  "image_url": "/images/vehicles/dvm-ford-fiesta.jpg"
+ },
+ {
+  "make": "Ford",
+  "model": "Focus",
+  "category": "HATCHBACK",
+  "year": 2018,
+  "price_cents": 186200000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-ford-focus.jpg"
+ },
+ {
+  "make": "Honda",
+  "model": "Civic",
+  "category": "HATCHBACK",
+  "year": 2018,
+  "price_cents": 195200000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-honda-civic.jpg"
+ },
+ {
+  "make": "Hyundai",
+  "model": "i20",
+  "category": "HATCHBACK",
+  "year": 2020,
+  "price_cents": 146500000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-hyundai-i20.jpg"
+ },
+ {
+  "make": "Peugeot",
+  "model": "208",
+  "category": "HATCHBACK",
+  "year": 2019,
+  "price_cents": 151800000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-peugeot-208.jpg"
+ },
+ {
+  "make": "Renault",
+  "model": "Clio",
+  "category": "HATCHBACK",
+  "year": 2019,
+  "price_cents": 128400000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-renault-clio.jpg"
+ },
+ {
+  "make": "Toyota",
+  "model": "Yaris",
+  "category": "HATCHBACK",
+  "year": 2020,
+  "price_cents": 139800000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-toyota-yaris.jpg"
+ },
+ {
+  "make": "Volkswagen",
+  "model": "Golf",
+  "category": "HATCHBACK",
+  "year": 2020,
+  "price_cents": 200200000,
+  "quantity": 1,
+  "image_url": "/images/vehicles/dvm-volkswagen-golf.jpg"
+ },
+ {
+  "make": "Volkswagen",
+  "model": "Polo",
+  "category": "HATCHBACK",
+  "year": 2018,
+  "price_cents": 123600000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-volkswagen-polo.jpg"
+ },
+ {
+  "make": "Audi",
+  "model": "A4",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 289700000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-audi-a4.jpg"
+ },
+ {
+  "make": "BMW",
+  "model": "3 Series",
+  "category": "SEDAN",
+  "year": 2020,
+  "price_cents": 360900000,
+  "quantity": 4,
+  "image_url": "/images/vehicles/dvm-bmw-3-series.jpg"
+ },
+ {
+  "make": "Ford",
+  "model": "Mondeo",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 201900000,
+  "quantity": 1,
+  "image_url": "/images/vehicles/dvm-ford-mondeo.jpg"
+ },
+ {
+  "make": "Jaguar",
+  "model": "XF",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 339100000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-jaguar-xf.jpg"
+ },
+ {
+  "make": "Mazda",
+  "model": "Mazda6",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 210800000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-mazda-mazda6.jpg"
+ },
+ {
+  "make": "Mercedes-Benz",
+  "model": "C Class",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 302600000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-mercedes-benz-c-class.jpg"
+ },
+ {
+  "make": "Mercedes-Benz",
+  "model": "E Class",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 376000000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-mercedes-benz-e-class.jpg"
+ },
+ {
+  "make": "Mercedes-Benz",
+  "model": "S Class",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 737300000,
+  "quantity": 4,
+  "image_url": "/images/vehicles/dvm-mercedes-benz-s-class.jpg"
+ },
+ {
+  "make": "Volkswagen",
+  "model": "Passat",
+  "category": "SEDAN",
+  "year": 2018,
+  "price_cents": 229000000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-volkswagen-passat.jpg"
+ },
+ {
+  "make": "Volvo",
+  "model": "S60",
+  "category": "SEDAN",
+  "year": 2019,
+  "price_cents": 238200000,
+  "quantity": 1,
+  "image_url": "/images/vehicles/dvm-volvo-s60.jpg"
+ },
+ {
+  "make": "Audi",
+  "model": "Q5",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 404300000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-audi-q5.jpg"
+ },
+ {
+  "make": "BMW",
+  "model": "X5",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 502800000,
+  "quantity": 1,
+  "image_url": "/images/vehicles/dvm-bmw-x5.jpg"
+ },
+ {
+  "make": "Ford",
+  "model": "Kuga",
+  "category": "SUV",
+  "year": 2020,
+  "price_cents": 239300000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-ford-kuga.jpg"
+ },
+ {
+  "make": "Honda",
+  "model": "CR-V",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 243700000,
+  "quantity": 1,
+  "image_url": "/images/vehicles/dvm-honda-cr-v.jpg"
+ },
+ {
+  "make": "Hyundai",
+  "model": "Tucson",
+  "category": "SUV",
+  "year": 2021,
+  "price_cents": 233400000,
+  "quantity": 5,
+  "image_url": "/images/vehicles/dvm-hyundai-tucson.jpg"
+ },
+ {
+  "make": "Jeep",
+  "model": "Cherokee",
+  "category": "SUV",
+  "year": 2019,
+  "price_cents": 340500000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-jeep-cherokee.jpg"
+ },
+ {
+  "make": "Kia",
+  "model": "Sportage",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 191500000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-kia-sportage.jpg"
+ },
+ {
+  "make": "Land Rover",
+  "model": "Range Rover",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 797400000,
+  "quantity": 4,
+  "image_url": "/images/vehicles/dvm-land-rover-range-rover.jpg"
+ },
+ {
+  "make": "Land Rover",
+  "model": "Range Rover Evoque",
+  "category": "SUV",
+  "year": 2019,
+  "price_cents": 321500000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-land-rover-range-rover-evoque.jpg"
+ },
+ {
+  "make": "Mazda",
+  "model": "CX-5",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 244000000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-mazda-cx-5.jpg"
+ },
+ {
+  "make": "Nissan",
+  "model": "Qashqai",
+  "category": "SUV",
+  "year": 2021,
+  "price_cents": 209700000,
+  "quantity": 5,
+  "image_url": "/images/vehicles/dvm-nissan-qashqai.jpg"
+ },
+ {
+  "make": "Porsche",
+  "model": "Macan",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 482100000,
+  "quantity": 8,
+  "image_url": "/images/vehicles/dvm-porsche-macan.jpg"
+ },
+ {
+  "make": "Toyota",
+  "model": "RAV4",
+  "category": "SUV",
+  "year": 2019,
+  "price_cents": 257800000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-toyota-rav4.jpg"
+ },
+ {
+  "make": "Volvo",
+  "model": "XC60",
+  "category": "SUV",
+  "year": 2018,
+  "price_cents": 345200000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-volvo-xc60.jpg"
+ },
+ {
+  "make": "Ford",
+  "model": "Galaxy",
+  "category": "VAN",
+  "year": 2018,
+  "price_cents": 291300000,
+  "quantity": 2,
+  "image_url": "/images/vehicles/dvm-ford-galaxy.jpg"
+ },
+ {
+  "make": "Ford",
+  "model": "Tourneo Connect",
+  "category": "VAN",
+  "year": 2018,
+  "price_cents": 176300000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-ford-tourneo-connect.jpg"
+ },
+ {
+  "make": "Mercedes-Benz",
+  "model": "V Class",
+  "category": "VAN",
+  "year": 2018,
+  "price_cents": 504600000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-mercedes-benz-v-class.jpg"
+ },
+ {
+  "make": "Renault",
+  "model": "Kangoo",
+  "category": "VAN",
+  "year": 2011,
+  "price_cents": 119600000,
+  "quantity": 1,
+  "image_url": "/images/vehicles/dvm-renault-kangoo.jpg"
+ },
+ {
+  "make": "Vauxhall",
+  "model": "Vivaro",
+  "category": "VAN",
+  "year": 2019,
+  "price_cents": 417600000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-vauxhall-vivaro.jpg"
+ },
+ {
+  "make": "Volkswagen",
+  "model": "Caravelle",
+  "category": "VAN",
+  "year": 2018,
+  "price_cents": 412400000,
+  "quantity": 0,
+  "image_url": "/images/vehicles/dvm-volkswagen-caravelle.jpg"
+ },
+ {
+  "make": "Volkswagen",
+  "model": "Sharan",
+  "category": "VAN",
+  "year": 2018,
+  "price_cents": 290300000,
+  "quantity": 3,
+  "image_url": "/images/vehicles/dvm-volkswagen-sharan.jpg"
+ }
+]

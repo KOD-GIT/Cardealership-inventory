@@ -46,10 +46,12 @@ def list_vehicles(
 @router.get("/search", response_model=list[VehicleRead])
 def search_vehicles(
     params: Annotated[VehicleSearchCriteria, Query()],
+    skip: int = 0,
+    limit: int = 50,
     _user: User = Depends(get_current_user),
     service: VehicleService = Depends(get_vehicle_service),
 ) -> list[VehicleRead]:
-    return service.search(params)
+    return service.search(params, skip, limit)
 
 
 @router.put("/{vehicle_id}", response_model=VehicleRead)

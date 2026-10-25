@@ -101,3 +101,13 @@ def test_search_treats_an_underscore_in_the_model_literally(client, user_headers
 )
 def test_search_rejects_invalid_input_with_422(client, user_headers, params) -> None:
     assert client.get("/api/vehicles/search", params=params, headers=user_headers).status_code == 422
+
+
+def test_search_can_be_read_page_by_page_with_skip_and_limit(client, user_headers, make_vehicle) -> None:
+    for number in range(5):
+        make_vehicle(make="Toyota", model=f"Model {number}")
+    response = client.get(
+        "/api/vehicles/search", params={"make": "Toyota", "skip": 2, "limit": 2}, headers=user_headers
+    )
+    assert response.status_code == 200
+    assert [vehicle["model"] for vehicle in response.json()] == ["Model 2", "Model 3"]
