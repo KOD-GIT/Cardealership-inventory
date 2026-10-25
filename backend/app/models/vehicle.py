@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import CheckConstraint, DateTime, Enum, Integer, String
+from sqlalchemy import BigInteger, CheckConstraint, DateTime, Enum, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base, utcnow
@@ -19,7 +19,7 @@ class Vehicle(Base):
     model: Mapped[str] = mapped_column(String(80), index=True)
     category: Mapped[VehicleCategory] = mapped_column(Enum(VehicleCategory), index=True)
     # Money is stored as integer cents to avoid float rounding errors (decision D5).
-    price_cents: Mapped[int] = mapped_column(Integer, index=True)
+    price_cents: Mapped[int] = mapped_column(BigInteger, index=True)
     quantity: Mapped[int] = mapped_column(Integer, default=0)
     year: Mapped[int | None] = mapped_column(Integer, nullable=True)
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
