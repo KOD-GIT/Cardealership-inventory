@@ -88,5 +88,6 @@ def restock_vehicle(
     vehicle_id: int,
     payload: RestockRequest,
     _admin: User = Depends(require_admin),
+    service: InventoryService = Depends(get_inventory_service),
 ) -> VehicleRead:
-    raise _NOT_IMPLEMENTED
+    return service.restock(vehicle_id, payload.quantity)

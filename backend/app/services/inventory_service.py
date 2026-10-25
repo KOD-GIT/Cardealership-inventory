@@ -25,4 +25,6 @@ class InventoryService:
 
     def restock(self, vehicle_id: int, quantity: int) -> VehicleRead:
         """Increase stock. Admin-only is enforced at the API layer (`require_admin`)."""
-        raise NotImplementedError
+        vehicle = self._vehicles.get(vehicle_id)
+        self._vehicles.increment_stock(vehicle_id, quantity)
+        return VehicleRead.from_model(vehicle)

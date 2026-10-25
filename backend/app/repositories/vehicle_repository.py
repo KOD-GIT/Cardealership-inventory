@@ -68,4 +68,8 @@ class VehicleRepository:
         return self._db.execute(statement).rowcount == 1
 
     def increment_stock(self, vehicle_id: int, quantity: int) -> None:
-        raise NotImplementedError
+        """Add to the stock inside the database, so two restocks at once cannot overwrite each other."""
+        self._db.execute(
+            update(Vehicle).where(Vehicle.id == vehicle_id).values(quantity=Vehicle.quantity + quantity)
+        )
+        self._db.commit()
