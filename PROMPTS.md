@@ -11,7 +11,7 @@ continue (that is an AI summary, so it does not belong here). Earlier planning c
 
 ---
 
-## Session 1: handoff, backend phases 1-11, Docker, IGNITION frontend, DVM-CAR data
+## Session 1: handoff, backend phases 1-11, Docker, IGNITION frontend, DVM-CAR data, cleanup
 
 ### USER · 2026-10-24 14:55:11 UTC
 
@@ -3693,3 +3693,69 @@ Still open from earlier:
 ### USER · 2026-10-25 15:38:05 UTC
 
 do the my ai usage and prompts md section
+
+### CLAUDE · 2026-10-25 15:38:38 UTC
+
+Nothing sensitive. Writing both sections.
+
+### CLAUDE · 2026-10-25 15:39:00 UTC
+
+I've written both sections and committed them on `main` as `59b3841`. I haven't pushed yet.
+
+**`PROMPTS.md`** now holds the real chat log from this session: 118 of your messages and 260 of Claude's replies, in order, with timestamps. Nothing is reworded. The header says what was left out:
+- The commands and tool output between replies.
+- The automatic system notices.
+- The AI-written summary the tool made when the conversation got too long. The kata forbids AI summaries, so I excluded it.
+
+The earlier Claude web and Stitch chats are not in the file, because I don't have them. If the kata needs them, paste them in or add public share links.
+
+**README "My AI Usage"** is filled in: tools, how each was used, and a reflection. It's factual and based on what happened, but the kata wants your own words. Please read it and adjust. In particular, edit the reflection so it says what you think, since I can't write your opinions for you.
+
+Do you want me to push this to GitHub?
+
+### USER · 2026-10-25 15:41:27 UTC
+
+no first restructure the project remove build and setup md files
+
+### CLAUDE · 2026-10-25 15:42:04 UTC
+
+I removed the build and setup guides from the project and committed it as `3dd4b11` on `main`. `main` is 2 commits ahead of GitHub (this one and the AI-usage one), and nothing is pushed. I didn't re-run the tests, since only docs and config changed.
+
+**Removed from the repo:**
+- `docs/BUILD_GUIDE.md`
+- `docs/SETUP_GUIDE.md`
+- `docs/ANTIGRAVITY_SETUP.md`
+- `docs/CLAUDE_CODE_SETUP.md`
+- The `/setup` slash command, because it depended on the Antigravity guide.
+
+**Tidied around them:**
+- **Links:** The README and `CLAUDE.md` no longer link to the removed guides. The README's docs list and structure block are updated.
+- **Generated reports:** `backend/reports/` is now in `.gitignore`, so it stops showing as untracked.
+- **Your copies:** The copies in your Desktop folder (outside the repo) are untouched. The deleted files also stay in git history.
+
+**Still in `docs/`:**
+- `NEXT_STEPS.md` and `HANDOFF.md` are leftover handoff notes, and they still link to the removed guides, so those links are now dead.
+- `DESIGN_REVIEW.md` is a record of the design export, and `design/stitch_prompts.md` holds the Stitch prompts.
+- `API_CONTRACT.md` and `ER_DIAGRAM.*` are real project docs and should stay.
+
+Decision for you: do you want me to delete `NEXT_STEPS.md` and `HANDOFF.md` too, so no dead links remain? Once that's settled I can push everything.
+
+### USER · 2026-10-25 15:44:29 UTC
+
+<ide_opened_file>The user opened the file c:\Users\vinay_9sw88ap\Desktop\Cardealership Project\car-dealership-inventory\PROMPTS.md in the IDE. This may or may not be related to the current task.</ide_opened_file>
+
+yes
+
+### CLAUDE · 2026-10-25 15:44:42 UTC
+
+I deleted `docs/NEXT_STEPS.md` and `docs/HANDOFF.md` and committed it as `3d2e7a1`. No references to either file remain in the README, `CLAUDE.md` or the commands. I also removed the `/phase` command, which read `NEXT_STEPS.md`.
+
+`docs/` now holds only `API_CONTRACT.md`, `DESIGN_REVIEW.md`, `ER_DIAGRAM.*`, `design/` and `screenshots/`.
+
+`main` is 3 commits ahead of GitHub and nothing is pushed. Do you want me to push now?
+
+### USER · 2026-10-25 15:45:35 UTC
+
+<ide_opened_file>The user opened the file c:\Users\vinay_9sw88ap\Desktop\Cardealership Project\car-dealership-inventory\PROMPTS.md in the IDE. This may or may not be related to the current task.</ide_opened_file>
+
+push and push the prompt md too
