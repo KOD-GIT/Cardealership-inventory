@@ -7,3 +7,8 @@ def test_update_vehicle_changes_only_the_fields_sent(client, admin_headers, make
     assert body["make"] == "Toyota"
     assert body["model"] == "Camry"
     assert body["quantity"] == 5
+
+
+def test_update_vehicle_with_an_unknown_id_returns_404(client, admin_headers) -> None:
+    response = client.put("/api/vehicles/999999", json={"price": 24999.5}, headers=admin_headers)
+    assert response.status_code == 404
