@@ -1,0 +1,5 @@
+# The image runs its own `npm ci`; never copy the host's node_modules or local env file into the build.
+node_modules
+dist
+.env
+coverage
