@@ -36,6 +36,8 @@ def seed(db: Session) -> None:
         users.add(User(email=email, hashed_password=hash_password(settings.admin_password), role=Role.ADMIN))
     vehicles = VehicleRepository(db)
     for make, model, category, price_cents, quantity, year in SAMPLE_VEHICLES:
+        if vehicles.exists(make, model, year):
+            continue
         vehicles.add(
             Vehicle(
                 make=make,

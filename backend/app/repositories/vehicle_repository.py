@@ -26,6 +26,10 @@ class VehicleRepository:
     def get(self, vehicle_id: int) -> Vehicle | None:
         return self._db.get(Vehicle, vehicle_id)
 
+    def exists(self, make: str, model: str, year: int | None) -> bool:
+        query = select(Vehicle.id).where(Vehicle.make == make, Vehicle.model == model, Vehicle.year == year)
+        return self._db.scalar(query.limit(1)) is not None
+
     def save(self, vehicle: Vehicle) -> Vehicle:
         """Persist changes made to a vehicle that is already loaded."""
         self._db.commit()
