@@ -1,29 +1,19 @@
 import { Eye, EyeOff } from "lucide-react";
 import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, useId, useState } from "react";
 
-const CONTROL =
-  "h-11 w-full rounded-[10px] border bg-white px-3 text-base text-ink placeholder:text-muted/80 transition-colors focus-visible:border-brand disabled:bg-canvas";
+interface ShellProps { id: string; label: string; hint?: string; error?: string; optional?: boolean; children: ReactNode }
 
-interface FieldShellProps {
-  id: string;
-  label: string;
-  hint?: string;
-  error?: string;
-  optional?: boolean;
-  children: ReactNode;
-}
-
-/** Label + control + hint/error, wired together for screen readers. */
-function FieldShell({ id, label, hint, error, optional, children }: FieldShellProps) {
+/** Visible label + control + hint/error, wired together for screen readers. */
+function Shell({ id, label, hint, error, optional, children }: ShellProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-semibold text-ink">
+      <label htmlFor={id} className="t-label text-dim">
         {label}
-        {optional ? <span className="ml-1 font-normal text-muted">(optional)</span> : null}
+        {optional ? <span className="ml-1 normal-case text-muted">(optional)</span> : null}
       </label>
       {children}
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-sm text-danger">{error}</p>
+        <p id={`${id}-error`} role="alert" className="text-sm text-signal">{error}</p>
       ) : hint ? (
         <p id={`${id}-hint`} className="text-sm text-muted">{hint}</p>
       ) : null}
@@ -31,62 +21,80 @@ function FieldShell({ id, label, hint, error, optional, children }: FieldShellPr
   );
 }
 
-const describedBy = (id: string, error?: string, hint?: string) =>
-  error ? `${id}-error` : hint ? `${id}-hint` : undefined;
+const describedBy = (id: string, error?: string, hint?: string) => (error ? `${id}-error` : hint ? `${id}-hint` : undefined);
+type Common = { label: string; hint?: string; error?: string; optional?: boolean };
 
-type CommonProps = { label: string; hint?: string; error?: string; optional?: boolean };
-
-export const TextField = forwardRef<HTMLInputElement, CommonProps & InputHTMLAttributes<HTMLInputElement>>(
+export const TextField = forwardRef<HTMLInputElement, Common & InputHTMLAttributes<HTMLInputElement>>(
   function TextField({ label, hint, error, optional, className = "", ...rest }, ref) {
     const id = useId();
     return (
-      <FieldShell id={id} label={label} hint={hint} error={error} optional={optional}>
+      <Shell id={id} label={label} hint={hint} error={error} optional={optional}>
         <input
           ref={ref} id={id} aria-invalid={error ? true : undefined} aria-describedby={describedBy(id, error, hint)}
-          className={`${CONTROL} ${error ? "border-danger" : "border-line"} ${className}`} {...rest}
+          className={`input ${className}`} {...rest}
         />
-      </FieldShell>
+      </Shell>
     );
   },
 );
 
-export const PasswordField = forwardRef<HTMLInputElement, CommonProps & Omit<InputHTMLAttributes<HTMLInputElement>, "type">>(
-  function PasswordField({ label, hint, error, className = "", ...rest }, ref) {
+/** Password box with a show/hide toggle. The toggle is a real button with a state the screen reader announces. */
+export const PasswordField = forwardRef<HTMLInputElement, Common & Omit<InputHTMLAttributes<HTMLInputElement>, "type">>(
+  function PasswordField({ label, hint, error, optional, className = "", ...rest }, ref) {
     const id = useId();
     const [visible, setVisible] = useState(false);
     return (
-      <FieldShell id={id} label={label} hint={hint} error={error}>
+      <Shell id={id} label={label} hint={hint} error={error} optional={optional}>
         <div className="relative">
           <input
             ref={ref} id={id} type={visible ? "text" : "password"} aria-invalid={error ? true : undefined}
-            aria-describedby={describedBy(id, error, hint)}
-            className={`${CONTROL} pr-11 ${error ? "border-danger" : "border-line"} ${className}`} {...rest}
+            aria-describedby={describedBy(id, error, hint)} className={`input pr-12 ${className}`} {...rest}
           />
           <button
             type="button" onClick={() => setVisible((v) => !v)} aria-pressed={visible}
             aria-label={visible ? "Hide password" : "Show password"}
-            className="absolute right-1 top-1 flex h-9 w-9 items-center justify-center rounded-lg text-muted hover:text-ink"
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-dim hover:text-bone"
           >
-            {visible ? <EyeOff className="h-5 w-5" aria-hidden="true" /> : <Eye className="h-5 w-5" aria-hidden="true" />}
+            {visible ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
           </button>
         </div>
-      </FieldShell>
+      </Shell>
     );
   },
 );
 
-export const SelectField = forwardRef<HTMLSelectElement, CommonProps & SelectHTMLAttributes<HTMLSelectElement>>(
+export const SelectField = forwardRef<HTMLSelectElement, Common & SelectHTMLAttributes<HTMLSelectElement>>(
   function SelectField({ label, hint, error, optional, className = "", children, ...rest }, ref) {
     const id = useId();
     return (
-      <FieldShell id={id} label={label} hint={hint} error={error} optional={optional}>
+      <Shell id={id} label={label} hint={hint} error={error} optional={optional}>
         <select
           ref={ref} id={id} aria-invalid={error ? true : undefined} aria-describedby={describedBy(id, error, hint)}
-          className={`${CONTROL} ${error ? "border-danger" : "border-line"} ${className}`} {...rest}
+          className={`input ${className}`} {...rest}
         >
           {children}
         </select>
-      </FieldShell>
+      </Shell>
+    );
+  },
+);
+
+/** Square checkbox: the box fills with bone when checked (no tick mark), as the design system specifies. */
+export const CheckboxField = forwardRef<HTMLInputElement, { label: string; hint?: string } & Omit<InputHTMLAttributes<HTMLInputElement>, "type">>(
+  function CheckboxField({ label, hint, className = "", ...rest }, ref) {
+    const id = useId();
+    return (
+      <div className={`flex items-start gap-3 ${className}`}>
+        <input
+          ref={ref} id={id} type="checkbox" aria-describedby={hint ? `${id}-hint` : undefined}
+          className="peer mt-0.5 h-[18px] w-[18px] shrink-0 cursor-pointer appearance-none border border-line-active bg-charcoal checked:bg-bone checked:shadow-[inset_0_0_0_4px_#141414] disabled:cursor-not-allowed disabled:opacity-50"
+          {...rest}
+        />
+        <div>
+          <label htmlFor={id} className="cursor-pointer text-sm text-bone peer-disabled:cursor-not-allowed">{label}</label>
+          {hint ? <span id={`${id}-hint`} className="block text-sm text-muted">{hint}</span> : null}
+        </div>
+      </div>
     );
   },
 );

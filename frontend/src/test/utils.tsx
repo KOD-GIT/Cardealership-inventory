@@ -4,7 +4,8 @@ import userEvent from "@testing-library/user-event";
 import type { ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { session } from "../api/client";
-import { ToastProvider } from "../components/ui/Toast";
+import App from "../App";
+import { NotificationProvider } from "../components/ui/Notifications";
 import { AuthProvider } from "../context/AuthContext";
 import type { User } from "../types";
 
@@ -14,7 +15,7 @@ interface Options {
   signedInAs?: User;
 }
 
-/** Renders with every provider the real app has (query cache, router, auth, toasts). */
+/** Renders with every provider the real app has (query cache, router, auth, notifications). */
 export function renderWithProviders(ui: ReactElement, { route = "/", signedInAs }: Options = {}) {
   if (signedInAs) session.save("test-token", signedInAs);
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
@@ -23,10 +24,14 @@ export function renderWithProviders(ui: ReactElement, { route = "/", signedInAs 
     <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={[route]}>
         <AuthProvider>
-          <ToastProvider>{ui}</ToastProvider>
+          <NotificationProvider>{ui}</NotificationProvider>
         </AuthProvider>
       </MemoryRouter>
     </QueryClientProvider>,
   );
-  return { user, ...utils };
+  return { user, queryClient, ...utils };
 }
+
+/** The whole application at a route: the quickest way to test a real user journey. */
+export const renderApp = (route = "/", options: Omit<Options, "route"> = {}) =>
+  renderWithProviders(<App />, { route, ...options });

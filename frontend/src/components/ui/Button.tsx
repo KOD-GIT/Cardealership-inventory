@@ -1,26 +1,23 @@
-import { Loader2 } from "lucide-react";
 import { type ButtonHTMLAttributes, forwardRef } from "react";
 
-type Variant = "primary" | "secondary" | "danger" | "ghost";
-type Size = "sm" | "md";
+export type ButtonVariant = "signal" | "ghost" | "danger";
+export type ButtonSize = "sm" | "md";
 
-const VARIANTS: Record<Variant, string> = {
-  primary: "bg-brand text-white hover:bg-brand-dark disabled:bg-line disabled:text-muted",
-  secondary: "bg-white text-ink border border-line hover:bg-canvas disabled:text-muted",
-  danger: "bg-danger text-white hover:bg-[#8E1C12] disabled:bg-line disabled:text-muted",
-  ghost: "text-brand hover:bg-brand-tint disabled:text-muted",
-};
-const SIZES: Record<Size, string> = { sm: "h-9 px-3 text-sm", md: "h-11 px-4 text-base" };
+const VARIANT_CLASS: Record<ButtonVariant, string> = { signal: "btn-signal", ghost: "btn-ghost", danger: "btn-danger" };
+
+/** Class string for anything that should look like a button (a <Link>, for example). */
+export const buttonClass = (variant: ButtonVariant = "ghost", size: ButtonSize = "md", extra = ""): string =>
+  `btn ${VARIANT_CLASS[variant]} ${size === "sm" ? "btn-sm" : ""} ${extra}`.trim();
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: Variant;
-  size?: Size;
-  /** Shows a spinner and blocks clicks while an action is in flight. */
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  /** Shows a spinner and blocks clicks while an action is in flight (also stops double submits). */
   loading?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = "primary", size = "md", loading = false, disabled, className = "", children, type = "button", ...rest },
+  { variant = "ghost", size = "md", loading = false, disabled, className = "", children, type = "button", ...rest },
   ref,
 ) {
   return (
@@ -29,10 +26,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       type={type}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className={`inline-flex items-center justify-center gap-2 rounded-[10px] font-semibold transition-colors disabled:cursor-not-allowed ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
+      className={buttonClass(variant, size, className)}
       {...rest}
     >
-      {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
+      {loading ? <span aria-hidden="true" className="h-3.5 w-3.5 animate-spin border-2 border-current border-t-transparent" /> : null}
       {children}
     </button>
   );

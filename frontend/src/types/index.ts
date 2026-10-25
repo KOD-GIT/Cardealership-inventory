@@ -11,13 +11,15 @@ export interface Vehicle {
   make: string;
   model: string;
   category: VehicleCategory;
-  price: number; // decimal currency units, e.g. 27999.99
+  price: number; // rupees as the API sends them, e.g. 24200000 or 815000.5. Money maths uses paise (lib/money.ts)
   quantity: number;
   year: number | null;
   image_url: string | null;
+  /** ISO-8601 time the vehicle was added to the inventory (arrival). Used for "Newest arrivals". */
+  created_at: string;
 }
-/** Body of POST /api/vehicles and PUT /api/vehicles/:id */
-export type VehicleInput = Omit<Vehicle, "id">;
+/** Body of POST /api/vehicles and PUT /api/vehicles/:id (the server fills in id and created_at). */
+export type VehicleInput = Omit<Vehicle, "id" | "created_at">;
 
 export interface VehicleSearchParams {
   make?: string;
