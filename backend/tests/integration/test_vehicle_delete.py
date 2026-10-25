@@ -55,3 +55,9 @@ def test_deleting_a_vehicle_keeps_its_purchases_with_a_null_vehicle(
 def test_unknown_vehicle_says_vehicle_not_found_in_plain_words(client, admin_headers) -> None:
     response = client.delete("/api/vehicles/999999", headers=admin_headers)
     assert response.json() == {"detail": "Vehicle not found"}
+
+
+def test_a_regular_user_is_told_admin_only_in_plain_words(client, user_headers, make_vehicle) -> None:
+    vehicle = make_vehicle()
+    response = client.delete(f"/api/vehicles/{vehicle.id}", headers=user_headers)
+    assert response.json() == {"detail": "Admin only"}
