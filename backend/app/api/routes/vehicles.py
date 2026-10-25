@@ -4,8 +4,10 @@ admin-only (D4); list/search/purchase are open to any logged-in user.
 NOTE: /search must be declared BEFORE /{vehicle_id} so it is not captured as an id.
 Auth dependencies get wired in during TDD phase 2.
 """
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
+from app.api.deps import require_admin
+from app.models.user import User
 from app.schemas.vehicle import (
     PurchaseRequest,
     RestockRequest,
@@ -19,7 +21,7 @@ _NOT_IMPLEMENTED = HTTPException(status.HTTP_501_NOT_IMPLEMENTED)
 
 
 @router.post("", response_model=VehicleRead, status_code=status.HTTP_201_CREATED)
-def create_vehicle(payload: VehicleCreate) -> VehicleRead:
+def create_vehicle(payload: VehicleCreate, _admin: User = Depends(require_admin)) -> VehicleRead:
     raise _NOT_IMPLEMENTED
 
 
