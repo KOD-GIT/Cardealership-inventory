@@ -61,8 +61,8 @@ Categories: `SEDAN, SUV, HATCHBACK, COUPE, CONVERTIBLE, TRUCK, VAN`.
 | Endpoint | Request | Success | Errors |
 |---|---|---|---|
 | `POST /api/vehicles` | `make, model, category, price (>0), quantity (>=0)`, optional `year, image_url` | `201` vehicle | 401, 403, 422 |
-| `GET /api/vehicles` | – | `200` list of **all** vehicles (including `quantity: 0`) | 401 |
-| `GET /api/vehicles/search` | query: `make`, `model`, `category`, `min_price`, `max_price` (all optional, combined with AND) | `200` list (possibly empty) | 401, 422 (e.g. `min_price > max_price`) |
+| `GET /api/vehicles` | query: `skip` (default 0), `limit` (default 50) | `200` one page of vehicles (including `quantity: 0`), ordered by id. Ask again with a larger `skip` until a page is shorter than `limit` | 401 |
+| `GET /api/vehicles/search` | query: `make`, `model`, `category`, `min_price`, `max_price` (all optional, combined with AND), plus `skip` / `limit` paging as above | `200` list (possibly empty) | 401, 422 (e.g. `min_price > max_price`) |
 | `PUT /api/vehicles/:id` | any subset of the create fields (partial update) | `200` vehicle | 401, 403, 404, 422 |
 | `DELETE /api/vehicles/:id` | – | `204` | 401, 403, 404 |
 
