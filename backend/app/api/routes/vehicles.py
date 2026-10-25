@@ -72,7 +72,11 @@ def delete_vehicle(
 
 
 @router.post("/{vehicle_id}/purchase", response_model=VehicleRead)
-def purchase_vehicle(vehicle_id: int, payload: PurchaseRequest | None = None) -> VehicleRead:
+def purchase_vehicle(
+    vehicle_id: int,
+    payload: PurchaseRequest | None = None,
+    _user: User = Depends(get_current_user),
+) -> VehicleRead:
     raise _NOT_IMPLEMENTED
 
 
