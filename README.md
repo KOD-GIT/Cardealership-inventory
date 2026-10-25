@@ -5,6 +5,10 @@ square-cornered, typographic design).
 Users register and log in, browse and filter the floor, compare vehicles, keep a watchlist, fill a cart and purchase
 (stock decreases). Administrators also add, edit, restock, feature and delete vehicles from **The Ledger**.
 
+**Live demo:** [cardealership-inventory-gamma.vercel.app](https://cardealership-inventory-gamma.vercel.app) (frontend on Vercel) ·
+[API docs](https://cardealership-inventory.onrender.com/docs) (backend on Render, database on Neon). The free backend
+sleeps when idle, so the first request after a pause can take up to a minute. Register your own account to try it.
+
 > **Status:** the API (register, login, vehicles, search, purchase, restock, seed) and the IGNITION frontend are complete and
 > tested. See "What is real and what is demo" below.
 
