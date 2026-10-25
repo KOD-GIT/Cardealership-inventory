@@ -3685,10 +3685,7 @@ The IGNITION frontend, the 60 DVM-CAR vehicles and the paging fix are now on `ma
 
 I fast-forwarded `redesign-ignition` and then `main`, so no merge commit was created. That brought in all the earlier IGNITION commits as well as the DVM-CAR ones.
 
-Still open from earlier:
-- You said you'd rewrite the five early commits to add AI trailers yourself later.
-- The "My AI Usage" section in the README and `PROMPTS.md` still need your own writing.
-- The structure cleanup (moving the guide files into `docs/reference/` and gitignoring them) was proposed but never approved.
+
 
 ### USER · 2026-10-25 15:38:05 UTC
 
