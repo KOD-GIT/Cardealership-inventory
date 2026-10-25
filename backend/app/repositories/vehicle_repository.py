@@ -17,7 +17,13 @@ class VehicleRepository:
         return vehicle
 
     def get(self, vehicle_id: int) -> Vehicle | None:
-        raise NotImplementedError
+        return self._db.get(Vehicle, vehicle_id)
+
+    def save(self, vehicle: Vehicle) -> Vehicle:
+        """Persist changes made to a vehicle that is already loaded."""
+        self._db.commit()
+        self._db.refresh(vehicle)
+        return vehicle
 
     def list_all(self, skip: int = 0, limit: int = 50) -> list[Vehicle]:
         query = select(Vehicle).order_by(Vehicle.id).offset(skip).limit(limit)

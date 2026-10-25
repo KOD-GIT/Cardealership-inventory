@@ -52,8 +52,13 @@ def search_vehicles(
 
 
 @router.put("/{vehicle_id}", response_model=VehicleRead)
-def update_vehicle(vehicle_id: int, payload: VehicleUpdate) -> VehicleRead:
-    raise _NOT_IMPLEMENTED
+def update_vehicle(
+    vehicle_id: int,
+    payload: VehicleUpdate,
+    _admin: User = Depends(require_admin),
+    service: VehicleService = Depends(get_vehicle_service),
+) -> VehicleRead:
+    return service.update(vehicle_id, payload)
 
 
 @router.delete("/{vehicle_id}", status_code=status.HTTP_204_NO_CONTENT)

@@ -20,7 +20,13 @@ class VehicleService:
         raise NotImplementedError
 
     def update(self, vehicle_id: int, data: VehicleUpdate) -> VehicleRead:
-        raise NotImplementedError
+        vehicle = self._vehicles.get(vehicle_id)
+        changes = data.model_dump(exclude_unset=True)  # only the fields the client actually sent
+        if "price" in changes:
+            changes["price_cents"] = to_cents(changes.pop("price"))
+        for field, value in changes.items():
+            setattr(vehicle, field, value)
+        return VehicleRead.from_model(self._vehicles.save(vehicle))
 
     def delete(self, vehicle_id: int) -> None:
         raise NotImplementedError
