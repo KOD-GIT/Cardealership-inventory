@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 import pytest
 from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.api.deps import get_current_user
 from app.core.security import create_access_token
+from app.models.enums import Role
 from app.repositories.user_repository import UserRepository
 
 
@@ -48,3 +51,21 @@ def test_get_current_user_with_a_non_numeric_subject_raises_401(db_session) -> N
     with pytest.raises(HTTPException) as error:
         get_current_user(bearer, db_session)
     assert error.value.status_code == 401
+
+
+def test_get_current_user_with_an_expired_token_raises_401(client, db_session) -> None:
+    credentials = {"email": "jane@example.com", "password": "Secret123"}
+    user_id = client.post("/api/auth/register", json=credentials).json()["id"]
+    expired = create_access_token(str(user_id), "USER", expires_delta=timedelta(seconds=-1))
+    bearer = HTTPAuthorizationCredentials(scheme="Bearer", credentials=expired)
+    with pytest.raises(HTTPException) as error:
+        get_current_user(bearer, db_session)
+    assert error.value.status_code == 401
+
+
+def test_get_current_user_trusts_the_stored_role_not_the_token_role(client, db_session) -> None:
+    credentials = {"email": "jane@example.com", "password": "Secret123"}
+    user_id = client.post("/api/auth/register", json=credentials).json()["id"]
+    claims_admin = create_access_token(str(user_id), "ADMIN")
+    bearer = HTTPAuthorizationCredentials(scheme="Bearer", credentials=claims_admin)
+    assert get_current_user(bearer, db_session).role == Role.USER
