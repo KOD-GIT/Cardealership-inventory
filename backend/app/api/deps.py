@@ -1,4 +1,5 @@
 """FastAPI dependencies: DB session, service factories, current user, role guards."""
+import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
@@ -28,18 +29,25 @@ def get_inventory_service(db: Session = Depends(get_db)) -> InventoryService:
     return InventoryService(VehicleRepository(db), PurchaseRepository(db))
 
 
+def _unauthorized() -> HTTPException:
+    return HTTPException(
+        status.HTTP_401_UNAUTHORIZED,
+        detail="Not authenticated",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+
 def get_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
     db: Session = Depends(get_db),
 ) -> User:
     """Decode the Bearer token -> load user. 401 on missing/invalid/expired token."""
     if credentials is None:
-        raise HTTPException(
-            status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    claims = decode_access_token(credentials.credentials)
+        raise _unauthorized()
+    try:
+        claims = decode_access_token(credentials.credentials)
+    except jwt.PyJWTError:
+        raise _unauthorized() from None
     return UserRepository(db).get_by_id(int(claims["sub"]))
 
 
