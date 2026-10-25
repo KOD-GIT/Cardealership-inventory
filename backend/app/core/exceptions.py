@@ -5,11 +5,20 @@ Keeping HTTP concerns out of the services makes them easy to unit test (SRP / DI
 
 
 class DomainError(Exception):
-    """Base class for all business-rule violations."""
+    """Base class for all business-rule violations.
+
+    `default_message` is what the API sends as `detail` (the frontend shows it to the user), so it
+    is plain words and never the class name.
+    """
+
+    default_message = "The request could not be completed"
+
+    def __str__(self) -> str:
+        return super().__str__() or self.default_message
 
 
 class EmailAlreadyRegisteredError(DomainError):
-    ...
+    default_message = "Email already registered"
 
 
 class InvalidCredentialsError(DomainError):
