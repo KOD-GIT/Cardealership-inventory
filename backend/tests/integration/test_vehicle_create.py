@@ -52,3 +52,9 @@ def test_created_vehicle_is_stored_with_the_price_in_cents(client, admin_headers
 def test_create_vehicle_rejects_an_invalid_body_with_422(client, admin_headers, changes) -> None:
     response = client.post("/api/vehicles", json={**VEHICLE, **changes}, headers=admin_headers)
     assert response.status_code == 422
+
+
+def test_create_vehicle_accepts_a_price_in_crores(client, admin_headers) -> None:
+    response = client.post("/api/vehicles", json={**VEHICLE, "price": 41000000}, headers=admin_headers)
+    assert response.status_code == 201
+    assert response.json()["price"] == 41000000
