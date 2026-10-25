@@ -1,3 +1,7 @@
+import pytest
+
+from app.models.vehicle import Vehicle
+
 VEHICLE = {
     "make": "Toyota",
     "model": "Camry",
@@ -26,3 +30,25 @@ def test_admin_creates_a_vehicle_and_gets_201(client, admin_headers) -> None:
     assert body["model"] == "Camry"
     assert isinstance(body["id"], int)
     assert body["price"] == 27999.99
+
+
+def test_created_vehicle_is_stored_with_the_price_in_cents(client, admin_headers, db_session) -> None:
+    vehicle_id = client.post("/api/vehicles", json=VEHICLE, headers=admin_headers).json()["id"]
+    stored = db_session.get(Vehicle, vehicle_id)
+    assert stored is not None
+    assert stored.price_cents == 2799999
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"price": 0},
+        {"quantity": -1},
+        {"category": "SPACESHIP"},
+        {"make": ""},
+    ],
+    ids=["price-zero", "negative-quantity", "bad-category", "empty-make"],
+)
+def test_create_vehicle_rejects_an_invalid_body_with_422(client, admin_headers, changes) -> None:
+    response = client.post("/api/vehicles", json={**VEHICLE, **changes}, headers=admin_headers)
+    assert response.status_code == 422
