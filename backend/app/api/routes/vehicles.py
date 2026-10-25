@@ -84,5 +84,9 @@ def purchase_vehicle(
 
 
 @router.post("/{vehicle_id}/restock", response_model=VehicleRead)
-def restock_vehicle(vehicle_id: int, payload: RestockRequest) -> VehicleRead:  # admin only
+def restock_vehicle(
+    vehicle_id: int,
+    payload: RestockRequest,
+    _admin: User = Depends(require_admin),
+) -> VehicleRead:
     raise _NOT_IMPLEMENTED
