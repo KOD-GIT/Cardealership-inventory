@@ -8,3 +8,8 @@ def test_admin_deletes_a_vehicle_and_gets_204(client, admin_headers, make_vehicl
     assert response.status_code == 204
     db_session.expire_all()
     assert db_session.get(Vehicle, vehicle_id) is None
+
+
+def test_delete_vehicle_with_an_unknown_id_returns_404(client, admin_headers) -> None:
+    response = client.delete("/api/vehicles/999999", headers=admin_headers)
+    assert response.status_code == 404
