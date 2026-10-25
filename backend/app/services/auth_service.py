@@ -13,9 +13,10 @@ class AuthService:
 
     def register(self, data: RegisterRequest) -> UserRead:
         """Create a USER (never an ADMIN). Reject duplicate emails."""
-        if self._users.get_by_email(data.email) is not None:
+        email = data.email.lower()
+        if self._users.get_by_email(email) is not None:
             raise EmailAlreadyRegisteredError
-        user = User(email=data.email, hashed_password=hash_password(data.password), role=Role.USER)
+        user = User(email=email, hashed_password=hash_password(data.password), role=Role.USER)
         return UserRead.model_validate(self._users.add(user))
 
     def login(self, data: LoginRequest) -> TokenResponse:
