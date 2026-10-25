@@ -32,6 +32,8 @@ class VehicleNotFoundError(DomainError):
 class OutOfStockError(DomainError):
     """Raised when a purchase asks for more units than are available."""
 
+    default_message = "Out of stock"
+
 
 class PermissionDeniedError(DomainError):
     ...
