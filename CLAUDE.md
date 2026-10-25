@@ -8,8 +8,8 @@ Frontend: React 18, TypeScript, Vite, Tailwind, TanStack Query, React Hook Form 
 - The developer must understand and be able to explain every line in an interview. Work in small steps, pair-programming style. Never build a whole phase at once unless I ask.
 - For each test or change, say in 1 to 3 plain sentences what it does and why. Keep replies short. No emojis.
 - Before editing more than one file, or doing anything hard to undo, say what you are about to do and wait.
-- Prefer the slash commands in `.claude/commands/` (`/status`, `/phase`, `/red`, `/green`, `/refactor`, `/commit-ai`, `/final-check`).
-- Docs, read on demand (not every session): `docs/NEXT_STEPS.md` (phase test lists and verified hints), `docs/API_CONTRACT.md`, `docs/ER_DIAGRAM.md`, `docs/HANDOFF.md`.
+- Prefer the slash commands in `.claude/commands/` (`/status`, `/red`, `/green`, `/refactor`, `/commit-ai`, `/final-check`).
+- Docs, read on demand (not every session): `docs/API_CONTRACT.md`, `docs/ER_DIAGRAM.md`.
 
 ## State at handoff (volatile: run /status for the truth)
 - Backend is complete (all 11 TDD phases, 141 tests, ruff clean). Migrations 0001 and 0002 (prices are BIGINT paise so crore-level prices fit). The seed creates the admin and 14 vehicles with photos.
@@ -58,7 +58,6 @@ Every new behaviour is Red, then Green, then Refactor, in separate commits: `tes
 | 9 Purchase | purchase without token gives 401 | `assert 501 == 401` | `services/inventory_service.py`, `repositories/purchase_repository.py` |
 | 10 Restock | restock without token gives 401 | `assert 501 == 401` | `services/inventory_service.py` |
 | 11 Seed | seed creates the admin | `NotImplementedError` from `main()` | `app/scripts/seed.py` |
-Full test lists and hints per phase: `docs/NEXT_STEPS.md` Part C. Target: at least 90% backend coverage.
 
 ## Commits and git
 - Small commits. Subject in imperative mood with a type prefix: `test:`, `feat:`, `refactor:`, `fix:`, `docs:`, `chore:`, `ci:`. Template: `.gitmessage` (set `git config commit.template .gitmessage` once per clone).

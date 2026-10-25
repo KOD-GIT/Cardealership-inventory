@@ -18,7 +18,6 @@ Users register and log in, browse and filter the floor, compare vehicles, keep a
 | Tests | pytest + pytest-cov (backend), Vitest + Testing Library + MSW (frontend) |
 
 ## Documentation
-- [Backend phases in detail, with verified hints](docs/NEXT_STEPS.md)
 - [ER diagram](docs/ER_DIAGRAM.md) (Chen notation, PostgreSQL DDL)
 - [Design review](docs/DESIGN_REVIEW.md) (what was kept, removed and fixed from the AI design export)
 - [API contract and permission matrix](docs/API_CONTRACT.md)
@@ -138,7 +137,7 @@ Raw chat logs are in [`PROMPTS.md`](PROMPTS.md).
 ```
 backend/   app/{api,services,repositories,models,schemas,core,db,scripts}  alembic/  tests/{unit,integration}
 frontend/  src/{api,components,pages,hooks,context,data,lib,types,test}   (data/ holds the demo layer)
-docs/      ER_DIAGRAM.md  API_CONTRACT.md  NEXT_STEPS.md  DESIGN_REVIEW.md
+docs/      ER_DIAGRAM.md  API_CONTRACT.md  DESIGN_REVIEW.md
 ```
 
 ## Credits
